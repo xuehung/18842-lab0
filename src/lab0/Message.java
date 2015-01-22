@@ -8,18 +8,22 @@ public class Message implements Serializable {
 	 * 	serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private String src = null;
+	private int seqNum = -1;
+	private boolean isDuplicate = false;
 	public Message(String dest, String kind, Object data) {
 		 
 	 }
 	 // These settors are used by MessagePasser.send, not your app
 	 public void set_source(String source) {
-		 
+		 this.src = source;
 	 }
 	 public void set_seqNum(int sequenceNumber) {
-		 
+		 this.seqNum = sequenceNumber;
 	 }
 	 public void set_duplicate(Boolean dupe) {
-		 
+		 this.isDuplicate = dupe;
 	 }
 	 
 	 // other accessors, toString, etc as needed

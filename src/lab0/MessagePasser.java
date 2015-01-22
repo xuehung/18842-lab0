@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -17,8 +18,12 @@ import datatype.Node;
 import datatype.Rule;
 
 public class MessagePasser {
+	
+	final private int BUFFER_LEN = 1000; 
+	
 	private String configFilename = null;
 	private String localName = null;
+	private LinkedBlockingQueue<Message> messageBuffer = null; 
 	private Map<String, Node> nodeMap = null;
 	private List<Rule> sendRules = null;
 	private List<Rule> receiveRules = null;
@@ -30,6 +35,7 @@ public class MessagePasser {
 		/* set instance variables */
 		this.configFilename = configFilename;
 		this.localName = localName;
+		this.messageBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
 		this.nodeMap = new HashMap<String, Node>();
 		this.sendRules = new ArrayList<Rule>();
 		this.receiveRules = new ArrayList<Rule>();
@@ -61,7 +67,7 @@ public class MessagePasser {
 	    		System.out.printf("%s(ip: %s, port = %d) is added\n", name, ip, port);
 	    }
 	    
-	    /* send rules */
+	    /* send and receive rules */
 	    this.loadRule(object, this.sendRules, "sendRules");
 	    this.loadRule(object, this.receiveRules, "receiveRules");
 	    
@@ -103,11 +109,11 @@ public class MessagePasser {
 	}
 
 	void send(Message message) {
-
+		
 	}
 
 	// may block. Doesn't have to.
 	Message receive() {
-		return null;
+		return this.messageBuffer.poll();
 	}
 }
