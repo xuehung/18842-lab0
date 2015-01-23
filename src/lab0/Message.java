@@ -41,6 +41,10 @@ public class Message implements Serializable {
 	public Object getData() {
 		return data;
 	}
+	public String getSrc() {
+		return src;
+	}
+	
 	 
 	 
 	 // other accessors, toString, etc as needed

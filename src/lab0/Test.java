@@ -8,13 +8,17 @@ public class Test {
 		// it is test
 		MessagePasser mp = new MessagePasser("config.yml", "alice");
 		MessagePasser mp1 = new MessagePasser("config.yml", "bob");
-		System.out.println("buffer size = "+mp1.messageBuffer.size());
-		mp.send(new Message("bob", "kind", "hi"));
-				
-		mp.send(new Message("bob", "kind", "hi"));
 		
-		System.out.println("buffer size = "+mp1.messageBuffer.size());
-		System.out.println("last line");
-
+		mp.send(new Message("bob", "kindxxxx", "hi"));
+		mp.send(new Message("bob", "kindoooo", "hi"));
+		mp.send(new Message("bob", "a", "hi"));
+		mp.send(new Message("bob", "b", "hi"));
+		mp.send(new Message("bob", "c", "hi"));
+		mp.send(new Message("bob", "d", "hi"));
+		
+		mp1.send(new Message("bob", "a", "hi"));
+		mp1.send(new Message("bob", "b", "hi"));
+		mp1.send(new Message("bob", "c", "hi"));
+		mp1.send(new Message("bob", "d", "hi"));
 	}
 }
