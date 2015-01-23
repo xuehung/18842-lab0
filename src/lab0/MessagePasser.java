@@ -1,9 +1,14 @@
 package lab0;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -23,12 +28,14 @@ public class MessagePasser {
 	
 	private String configFilename = null;
 	private String localName = null;
-	private LinkedBlockingQueue<Message> messageBuffer = null; 
+	public LinkedBlockingQueue<Message> messageBuffer = null; 
 	private Map<String, Node> nodeMap = null;
 	private List<Rule> sendRules = null;
 	private List<Rule> receiveRules = null;
 	
-	public MessagePasser(String configFilename, String localName) {
+	private ServerSocket listener = null;
+	
+	public MessagePasser(String configFilename, String localName) throws IOException {
 		
 		System.out.printf("##### MessagePasser(name: %s) is initialized #####\n\n", localName);
 		
@@ -42,6 +49,15 @@ public class MessagePasser {
 		
 		/* parse configuration */
 		this.loadConfig();
+		
+		/* create server socket */
+		
+		if (this.nodeMap.containsKey(this.localName)) {
+			this.createServerSocket(this.nodeMap.get(this.localName).getPort());
+		} else {
+			System.err.printf("local name: %s does not exist in configurarion\n", this.localName);
+		}
+		
 	}
 	
 	private void loadConfig() {
@@ -62,7 +78,7 @@ public class MessagePasser {
 	    for (LinkedHashMap<String, Object> node : nodeList) {
 	    		String name = (String)node.get("name");
 	    		String ip = (String)node.get("ip");
-	    		int port = (Integer)node.get("port");
+	    		int port = (Integer)node.get("port") + 2;
 	    		this.nodeMap.put(name, new Node(name, ip, port));
 	    		System.out.printf("%s(ip: %s, port = %d) is added\n", name, ip, port);
 	    }
@@ -107,13 +123,44 @@ public class MessagePasser {
 	    }
 	    System.out.printf("%d rules are loaded\n", ruleList.size());
 	}
+	
+	private void createServerSocket(int port) throws IOException {
+		this.listener = new ServerSocket(port);
+		Thread serverThread = new Thread(new MessageServer(this.listener, this.messageBuffer));
+		serverThread.start();
+	}
 
 	void send(Message message) {
-		
+		String dest = message.getDest();
+		if (!this.nodeMap.containsKey(dest)) {
+			return;
+		}
+		Node destNode = this.nodeMap.get(dest);
+		BufferedOutputStream out = null;
+		try {
+			@SuppressWarnings("resource")
+			Socket client = new Socket(destNode.getIp(), destNode.getPort());
+			out = new BufferedOutputStream(client.getOutputStream());
+			out.write(message.getData().toString().getBytes());
+			out.flush();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			out = null;
+		}
+		System.out.println("data was sent");
 	}
 
 	// may block. Doesn't have to.
 	Message receive() {
 		return this.messageBuffer.poll();
 	}
+	
 }
