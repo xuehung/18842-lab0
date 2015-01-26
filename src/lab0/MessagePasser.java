@@ -1,18 +1,20 @@
 package lab0;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+<<<<<<< HEAD
+=======
 import java.io.OutputStream;
+>>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.List;
@@ -30,7 +32,8 @@ public class MessagePasser {
 	
 	private String configFilename = null;
 	private String localName = null;
-	public LinkedBlockingQueue<Message> messageBuffer = null; 
+	private LinkedBlockingQueue<Message> incomingBuffer = null;
+	private LinkedBlockingQueue<Message> outgoingBuffer = null;
 	private Map<String, Node> nodeMap = null;
 	private List<Rule> sendRules = null;
 	private List<Rule> receiveRules = null;
@@ -45,7 +48,8 @@ public class MessagePasser {
 		/* set instance variables */
 		this.configFilename = configFilename;
 		this.localName = localName;
-		this.messageBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
+		this.incomingBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
+		this.outgoingBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
 		this.nodeMap = new HashMap<String, Node>();
 		this.sendRules = new ArrayList<Rule>();
 		this.receiveRules = new ArrayList<Rule>();
@@ -54,16 +58,33 @@ public class MessagePasser {
 		/* parse configuration */
 		this.loadConfig();
 		
-		/* create server socket */
+		/* create server socket for listening*/
+		this.createServerSocket(nodeMap.get(localName).getPort());
 		
-		if (this.nodeMap.containsKey(this.localName)) {
-			this.createServerSocket(this.nodeMap.get(this.localName).getPort());
-		} else {
-			System.err.printf("local name: %s does not exist in configurarion\n", this.localName);
+		
+		
+//		if (this.nodeMap.containsKey(this.localName)) {
+//			this.createServerSocket(this.nodeMap.get(this.localName).getPort());
+//		} else {
+//			System.err.printf("local name: %s does not exist in configurarion\n", this.localName);
+//		}
+//		
+		this.createSendSocket();
+		this.createSendingThread();
+		
+	}
+	private void createSendSocket() throws IOException {
+		
+		for (String name : this.nodeMap.keySet()) {
+			if (name.compareTo(this.localName) > 0) {
+				//this.createServerSocket(this.nodeMap.get(this.localName).getPort());
+				
+				Node destNode = this.nodeMap.get(name);
+				createSocket(destNode);
+			}
 		}
 		
 	}
-	
 	private void loadConfig() {
 		InputStream input = null;
 		try {
@@ -82,7 +103,11 @@ public class MessagePasser {
 	    for (LinkedHashMap<String, Object> node : nodeList) {
 	    		String name = (String)node.get("name");
 	    		String ip = (String)node.get("ip");
+<<<<<<< HEAD
+	    		int port = (Integer)node.get("port") + 5;
+=======
 	    		int port = (Integer)node.get("port") + 4;
+>>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
 	    		this.nodeMap.put(name, new Node(name, ip, port));
 	    		System.out.printf("%s(ip: %s, port = %d) is added\n", name, ip, port);
 	    }
@@ -127,9 +152,69 @@ public class MessagePasser {
 	    }
 	    System.out.printf("%d rules are loaded\n", ruleList.size());
 	}
-	
+	//createServerSocket can create socket to accept requests from other servers
 	private void createServerSocket(int port) throws IOException {
 		this.listener = new ServerSocket(port);
+<<<<<<< HEAD
+		Thread serverThread = new Thread(new MessageServer(this.listener, this.incomingBuffer, this.socketMap, this.nodeMap));
+		serverThread.start();
+	}
+	
+	private void createSocket(Node destNode) {
+		Thread client = new Thread(new MessageClient(destNode, incomingBuffer, socketMap, localName));
+		client.start();
+	}
+	
+	private void createSendingThread() {
+		Thread sendingThread = new Thread() {
+			public void run() {
+				while (true) {
+					Iterator<Message> it = outgoingBuffer.iterator();
+					while (it.hasNext()) {
+						Message message = it.next();
+						if (socketMap.containsKey(message.getDest())) {
+							outgoingBuffer.remove(message);
+							// send
+							Socket socket = socketMap.get(message.getDest());
+							try {
+								ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+								message.set_source(localName);
+								oos.writeObject(message);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+					
+				}
+			}
+		};
+		sendingThread.start();
+	}
+
+	public void send(Message message) {
+		if (message == null) {
+			return;
+		}
+		message.set_source(this.localName);
+		this.outgoingBuffer.add(message);
+//		if (!this.nodeMap.containsKey(dest)) {
+//			return;
+//		}
+//		Node destNode = this.nodeMap.get(dest);
+//		if (!this.socketMap.containsKey(dest)) {
+//			Socket socket = createSocket(destNode);
+//			if (socket == null) {
+//				return;
+//			}
+//			this.socketMap.put(dest, socket);
+//		}
+		
+		
+		
+		/*
+		Socket socket = this.socketMap.get(dest);
+=======
 		Thread serverThread = new Thread(new MessageServer(this.listener, this.messageBuffer, this.socketMap));
 		serverThread.start();
 	}
@@ -171,31 +256,26 @@ public class MessagePasser {
 		/*
 		
 		BufferedOutputStream out = null;
+>>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
 		try {
-			@SuppressWarnings("resource")
-			Socket client = new Socket(destNode.getIp(), destNode.getPort());
-			out = new BufferedOutputStream(client.getOutputStream());
-			out.write(message.getData().toString().getBytes());
-			out.flush();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			oos.writeObject(message);
 		} catch (IOException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			out = null;
 		}
+<<<<<<< HEAD
+		*/
+		
+	
+=======
 		System.out.println("data was sent");
 		*/
+>>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
 	}
 
 	// may block. Doesn't have to.
 	Message receive() {
-		return this.messageBuffer.poll();
+		return this.incomingBuffer.poll();
 	}
 	
 }
