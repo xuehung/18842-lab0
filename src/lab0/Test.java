@@ -20,9 +20,5 @@ public class Test {
 		mp1.send(new Message("bob", "b", "hi"));
 		mp1.send(new Message("bob", "c", "hi"));
 		mp1.send(new Message("bob", "d", "hi"));
-<<<<<<< HEAD
-		
-=======
->>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
 	}
 }
