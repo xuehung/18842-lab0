@@ -1,5 +1,6 @@
 package demo;
 
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -13,6 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.html.HTMLDocument;
 
 import datatype.Node;
 import lab0.ConfigLoader;
@@ -20,15 +24,23 @@ import lab0.Message;
 import lab0.MessagePasser;
 
 public class MPGUI implements Runnable {//implements ActionListener {
+	final private String htmlINIT = "<html>"
+			+ "<body id='body' style='height: 400px; font-size: 18px;'>"
+			+ "</body>"
+			+ "</html>";
 	private String localName = null;
 	private Map<String, Node> nodeMap = null;
 	private List<String> nameList = null;
 	private JFrame frame = null;
-	private JTextArea output = null;
+	private JTextPane output = null;
 	private JTextArea input = null;
 	private JTextField kindField = null;
 	private JComboBox menu = null;
 	private MessagePasser mp = null;
+	
+	
+
+    private HTMLDocument document = null;
 	
 	public MPGUI(String filePath, String localName) throws IOException {
 		this.localName = localName;
@@ -41,22 +53,29 @@ public class MPGUI implements Runnable {//implements ActionListener {
 			}
 		}
 		mp = new MessagePasser(filePath, localName);
+		
+		output = new JTextPane();
+		output.setContentType("text/html");
+		output.setText(htmlINIT);
+		document = (HTMLDocument) output.getDocument();
 	}
+	
+	
 	@Override
 	public void run() {
 		
 		frame = new JFrame(this.localName);
-		output = new JTextArea(40, 10);
-		input = new JTextArea();
+		input = new JTextArea(10, 10);
 		kindField = new JTextField();
 		String[] nameStrings = this.nameList.toArray(new String[nameList.size()]);
 		menu = new JComboBox(nameStrings);
 		
 		output.setEditable(false);
 		JScrollPane scroll = new JScrollPane(output);
+		scroll.setSize(400, 700);
 		
-		input.setSize(400, 100);
 		kindField.setSize(400, 20);
+		kindField.setText("defalt_kind");
 		frame.setSize(400, 800);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 		frame.getContentPane().add(scroll);
@@ -72,12 +91,22 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		        		String text = input.getText();
 		        		String kind = kindField.getText();
 		        		String dest = (String)menu.getSelectedItem();
-		        		System.out.println(text);
-		        		System.out.println(kind);
-		        		System.out.println(dest);
+		        		
 		        		input.setText("");
-		        		output.append(String.format("-> %s(%s)\n%s\n\n", dest, kind, text));
-		        		output.setCaretPosition(output.getDocument().getLength());
+					try {
+						document.insertBeforeEnd(document.getElement("body"), 
+								"<div align='right'>"
+								+ "<p>"+localName+":<br>"
+								+text+"</p></div><hr>");
+					} catch (BadLocationException e1) {
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+		        		//document.insertString(arg0, arg1, arg2);.append(String.format("-> %s(%s)\n%s\n\n", dest, kind, text));
+		        		System.out.println(output.getDocument().getLength());
+		        		
+					output.setCaretPosition(output.getDocument().getLength());
 		        		e.consume();
 		        		Message m = new Message(dest, kind, text);
 		        		mp.send(m);
@@ -97,16 +126,28 @@ public class MPGUI implements Runnable {//implements ActionListener {
 			}
 		});
 		
-		Thread thread = new Thread(){
-		    public void run(){
-		      while (true) {
-		    	  	Message m = mp.receive();
-		    	  	if (m != null) {
-		    	  		output.append(String.format("<- %s(%s)\n%s\n\n", m.getSrc(), m.getKind(), m.getData()));
-		    	  		output.setCaretPosition(output.getDocument().getLength());
-		    	  	}
-		      }
-		    }
+		Thread thread = new Thread() {
+			public void run() {
+				while (true) {
+					System.out.println("receive is called");
+					Message m = mp.receive();
+					System.out.println("receive returns");
+					if (m != null) {
+						try {
+							document.insertBeforeEnd(document.getElement("body"), 
+									"<div align='left'>"
+									+ "<p>"+m.getSrc()+":<br>"
+									+m.getData()+"</p></div><hr>");
+						} catch (BadLocationException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						output.setCaretPosition(output.getDocument()
+								.getLength());
+					}
+				}
+			}
 		};
 		thread.start();
 		

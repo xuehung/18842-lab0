@@ -57,15 +57,15 @@ public class MessageClient implements Runnable {
 		while (true) {
 			ObjectInputStream ois;
 			try {
-				System.out.println("socket = "+socket);
 				ois = new ObjectInputStream(socket.getInputStream());
 				Message msg = (Message)ois.readObject();
-				this.incomingBuffer.add(msg);
-				System.out.println("kind = " + msg.getKind());
+				this.incomingBuffer.put(msg);
 			} catch (IOException e) {
 				e.printStackTrace();
 				break;
 			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
