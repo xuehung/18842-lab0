@@ -2,6 +2,7 @@ package lab0;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+<<<<<<< HEAD
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Map;
@@ -25,10 +26,23 @@ public class MessageClient implements Runnable {
 		this.destNode = destNode;
 		this.localName = localName;
 		this.socket = this.socketMap.get(destNode.getName());
+=======
+import java.net.Socket;
+import java.util.concurrent.LinkedBlockingQueue;
+
+public class MessageClient implements Runnable {
+	private LinkedBlockingQueue<Message> messageBuffer = null;
+	private Socket socket = null;
+	
+	public MessageClient(LinkedBlockingQueue<Message> messageBuffer, Socket socket) {
+		this.messageBuffer = messageBuffer;
+		this.socket = socket;
+>>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
 	}
 	
 	@Override
 	public void run() {
+<<<<<<< HEAD
 		/*
 		 * When run() is called, there are two situations
 		 * 	1) socket already exists
@@ -61,6 +75,14 @@ public class MessageClient implements Runnable {
 				ois = new ObjectInputStream(socket.getInputStream());
 				Message msg = (Message)ois.readObject();
 				this.incomingBuffer.add(msg);
+=======
+		while (true) {
+			ObjectInputStream ois;
+			try {
+				ois = new ObjectInputStream(socket.getInputStream());
+				Message msg = (Message)ois.readObject();
+				this.messageBuffer.add(msg);
+>>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
 				System.out.println("kind = " + msg.getKind());
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -6,6 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+<<<<<<< HEAD
+=======
+import java.io.OutputStream;
+>>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -99,7 +103,11 @@ public class MessagePasser {
 	    for (LinkedHashMap<String, Object> node : nodeList) {
 	    		String name = (String)node.get("name");
 	    		String ip = (String)node.get("ip");
+<<<<<<< HEAD
 	    		int port = (Integer)node.get("port") + 5;
+=======
+	    		int port = (Integer)node.get("port") + 4;
+>>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
 	    		this.nodeMap.put(name, new Node(name, ip, port));
 	    		System.out.printf("%s(ip: %s, port = %d) is added\n", name, ip, port);
 	    }
@@ -147,6 +155,7 @@ public class MessagePasser {
 	//createServerSocket can create socket to accept requests from other servers
 	private void createServerSocket(int port) throws IOException {
 		this.listener = new ServerSocket(port);
+<<<<<<< HEAD
 		Thread serverThread = new Thread(new MessageServer(this.listener, this.incomingBuffer, this.socketMap, this.nodeMap));
 		serverThread.start();
 	}
@@ -205,15 +214,63 @@ public class MessagePasser {
 		
 		/*
 		Socket socket = this.socketMap.get(dest);
+=======
+		Thread serverThread = new Thread(new MessageServer(this.listener, this.messageBuffer, this.socketMap));
+		serverThread.start();
+	}
+	
+	private Socket createSocket(Node destNode) {
+		Socket client = null;
+		try {
+			client = new Socket(destNode.getIp(), destNode.getPort());
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return client;
+	}
+
+	void send(Message message) {
+		message.set_source(this.localName);
+		String dest = message.getDest();
+		if (!this.nodeMap.containsKey(dest)) {
+			return;
+		}
+		Node destNode = this.nodeMap.get(dest);
+		if (!this.socketMap.containsKey(dest)) {
+			Socket socket = createSocket(destNode);
+			if (socket == null) {
+				return;
+			}
+			this.socketMap.put(dest, socket);
+		}
+		Socket socket = this.socketMap.get(dest);
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 			oos.writeObject(message);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		/*
+		
+		BufferedOutputStream out = null;
+>>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+			oos.writeObject(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+<<<<<<< HEAD
 		*/
 		
 	
+=======
+		System.out.println("data was sent");
+		*/
+>>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
 	}
 
 	// may block. Doesn't have to.

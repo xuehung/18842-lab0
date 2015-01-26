@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
+<<<<<<< HEAD
 import datatype.Node;
 
 public class MessageServer implements Runnable {
@@ -25,6 +26,21 @@ public class MessageServer implements Runnable {
 		this.incomingBuffer = messageBuffer;
 		this.socketMap = socketMap;
 		this.nodeMap = nodeMap;
+=======
+public class MessageServer implements Runnable {
+
+	private ServerSocket listener = null;
+	private LinkedBlockingQueue<Message> messageBuffer = null;
+	private Map<String, Socket> socketMap = null;
+	
+	
+	public MessageServer(ServerSocket listener, 
+			LinkedBlockingQueue<Message> messageBuffer,
+			Map<String, Socket> socketMap) {
+		this.listener = listener;
+		this.messageBuffer = messageBuffer;
+		this.socketMap = socketMap;
+>>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
 	}
 	
 	@Override
@@ -34,6 +50,7 @@ public class MessageServer implements Runnable {
 			try {
 				socket = this.listener.accept();
 				ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+<<<<<<< HEAD
 				//
 				Message msg = (Message)ois.readObject();
 				String src = msg.getSrc();
@@ -55,6 +72,12 @@ public class MessageServer implements Runnable {
 				Thread client = new Thread(new MessageClient(node, incomingBuffer, socketMap, null));
 				client.start();
 				
+=======
+				Message msg = (Message)ois.readObject();
+				this.socketMap.put(msg.getSrc(), socket);
+				Thread client = new Thread(new MessageClient(this.messageBuffer, socket));
+				client.start();
+>>>>>>> 6718dc6b8518ec531549dde6707982ff046e30be
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
