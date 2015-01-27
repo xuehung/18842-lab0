@@ -41,7 +41,7 @@ public class MessageClient implements Runnable {
 				try {
 					ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 					Message message = new Message(destNode.getName(), null, null);
-					message.set_source(localName);
+					message.setSource(localName);
 					oos.writeObject(message);
 				} catch (IOException e) {
 					e.printStackTrace();

@@ -57,7 +57,7 @@ public class ConfigLoader {
 		for (LinkedHashMap<String, Object> node : nodeList) {
 			String name = (String) node.get("name");
 			String ip = (String) node.get("ip");
-			int port = (Integer) node.get("port") + 2;
+			int port = (Integer) node.get("port") + 8;
 			this.nodeMap.put(name, new Node(name, ip, port));
 			System.out.printf("%s(ip: %s, port = %d) is added\n", name, ip, port);
 		}

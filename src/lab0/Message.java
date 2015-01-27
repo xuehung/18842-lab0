@@ -23,13 +23,13 @@ public class Message implements Serializable {
 		 this.data = data;
 	 }
 	 // These settors are used by MessagePasser.send, not your app
-	 public void set_source(String source) {
+	 public void setSource(String source) {
 		 this.src = source;
 	 }
-	 public void set_seqNum(int sequenceNumber) {
+	 public void setSeqNum(int sequenceNumber) {
 		 this.seqNum = sequenceNumber;
 	 }
-	 public void set_duplicate(Boolean dupe) {
+	 public void setDuplicate(Boolean dupe) {
 		 this.isDuplicate = dupe;
 	 }
 	 public String getDest() {
@@ -44,7 +44,20 @@ public class Message implements Serializable {
 	public String getSrc() {
 		return src;
 	}
+	public int getSeqNum() {
+		return seqNum;
+	}
+	public boolean getDup(){
+		return isDuplicate;
+	}
 	
+	public Message clone() {
+		Message clonedMsg = new Message(dest, kind, data);
+		clonedMsg.setSource(src);
+		clonedMsg.setDuplicate(true);
+		clonedMsg.setSeqNum(seqNum);
+		return clonedMsg;
+	}
 	 
 	 
 	 // other accessors, toString, etc as needed

@@ -30,6 +30,7 @@ public class MessagePasser {
 	private ServerSocket listener = null;
 	private Map<String, Socket> socketMap = null;
 	private ConfigLoader configLoader = null;
+	private int seqNumCounter = 0;
 	
 	public MessagePasser(String configFilename, String localName) throws IOException {
 		
@@ -116,7 +117,7 @@ public class MessagePasser {
 							Socket socket = socketMap.get(message.getDest());
 							try {
 								ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-								message.set_source(localName);
+								message.setSource(localName);
 								oos.writeObject(message);
 							} catch (IOException e) {
 								e.printStackTrace();
@@ -131,12 +132,34 @@ public class MessagePasser {
 	}
 
 	public void send(Message message) {
+		System.out.println("send is called");
 		if (message == null) {
 			return;
 		}
-		message.set_source(this.localName);
+		message.setSource(this.localName);
+		message.setSeqNum(++seqNumCounter);
 		this.checkConfigReload();
-		this.outgoingBuffer.add(message);
+		RuleFilter ruleFilter = new RuleFilter(message);
+		Rule matchRule = ruleFilter.getRule(sendRules);
+		System.out.println("matchRule = "+matchRule);
+		if (matchRule != null) {
+			System.out.println("matchRule = "+matchRule.getAction());
+			switch (matchRule.getAction()) {
+			case drop:
+				return;
+			case duplicate:
+				/* duplicate field is already set in clone */
+				Message duplicateMsg = message.clone();
+				this.outgoingBuffer.add(message);
+				this.outgoingBuffer.add(duplicateMsg);
+				break;
+			case delay:
+				
+				break;
+			}
+		} else {
+			this.outgoingBuffer.add(message);
+		}
 	}
 
 	/**
