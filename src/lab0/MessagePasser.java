@@ -6,15 +6,11 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import datatype.Action;
 import datatype.Node;
 import datatype.Rule;
 
@@ -27,13 +23,15 @@ public class MessagePasser {
 	private LinkedBlockingQueue<Message> incomingBuffer = null;
 	private LinkedBlockingQueue<Message> outgoingBuffer = null;
 	private Map<String, Node> nodeMap = null;
-	private List<Rule> sendRules = null;
-	private List<Rule> receiveRules = null;
+	
 	private ServerSocket listener = null;
 	private Map<String, Socket> socketMap = null;
 	private ConfigLoader configLoader = null;
 	private int seqNumCounter = 0;
 	private Queue<Message> messageQueue=null;
+	private RuleManager ruleManager = null;
+	
+	
 	public MessagePasser(String configFilename, String localName) throws IOException {
 		
 		System.out.printf("##### MessagePasser(name: %s) is initialized #####\n\n", localName);
@@ -44,8 +42,6 @@ public class MessagePasser {
 		this.incomingBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
 		this.outgoingBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
 		this.nodeMap = new HashMap<String, Node>();
-		this.sendRules = new ArrayList<Rule>();
-		this.receiveRules = new ArrayList<Rule>();
 		this.socketMap = new HashMap<String, Socket>();
 		this.messageQueue=new ArrayDeque<Message>();
 		/* parse configuration */
@@ -68,7 +64,7 @@ public class MessagePasser {
 		for (String name : this.nodeMap.keySet()) {
 			if (name.compareTo(this.localName) > 0) {				
 				Node destNode = this.nodeMap.get(name);
-				Thread client = new Thread(new MessageClient(destNode, incomingBuffer, socketMap, localName));
+				Thread client = new Thread(new MessageClient(destNode, incomingBuffer, socketMap, localName, ruleManager));
 				client.start();
 			}
 		}
@@ -79,19 +75,9 @@ public class MessagePasser {
 		
 	    /* configuration */
 		this.nodeMap = configLoader.getNodeMap();
-	   	
-		/* send and receive rules */
-		this.sendRules = configLoader.getSendRules();
-		this.receiveRules = configLoader.getReceiveRules();
+		this.ruleManager = new RuleManager(configLoader);
+	  
 	}
-	
-	private void checkConfigReload() {
-		if (this.configLoader.needUpdate()) {
-			this.sendRules = configLoader.getSendRules();
-			this.receiveRules = configLoader.getReceiveRules();
-		}
-	}
-	
 	
 	
 	/**
@@ -101,7 +87,9 @@ public class MessagePasser {
 	 */
 	private void createServerSocket(int port) throws IOException {
 		this.listener = new ServerSocket(port);
-		Thread serverThread = new Thread(new MessageServer(this.listener, this.incomingBuffer, this.socketMap, this.nodeMap));
+		Thread serverThread = new Thread(new MessageServer(this.listener,
+				this.incomingBuffer, this.socketMap, this.nodeMap,
+				this.ruleManager));
 		serverThread.start();
 	}
 	
@@ -141,9 +129,8 @@ public class MessagePasser {
 		
 		message.setSource(this.localName);
 		message.setSeqNum(++seqNumCounter);
-		this.checkConfigReload();
-		RuleFilter ruleFilter = new RuleFilter(message);
-		Rule matchRule = ruleFilter.getRule(sendRules);
+		
+		Rule matchRule = ruleManager.matchSendRule(message);
 		System.out.println("matchRule = "+matchRule);
 		if (matchRule != null) {
 			System.out.println("matchRule = "+matchRule.getAction());

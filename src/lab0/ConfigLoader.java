@@ -41,10 +41,19 @@ public class ConfigLoader {
 	 * once this method is called, the lastModified time will
 	 * be updated and will return false when called again
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean needUpdate() {
 		if (this.lastModified == this.configFile.lastModified()) {
 			return false;
 		}
+		InputStream input = null;
+		try {
+			input = new FileInputStream(this.configFile);
+		} catch (FileNotFoundException e) {
+			return false;
+		}
+	    Yaml yaml = new Yaml();
+		this.config = (Map<String, List<LinkedHashMap<String, Object>>>) yaml.load(input);
 		this.lastModified = this.configFile.lastModified();
 		System.out.println("Configuration reloaded!");
 		return true;

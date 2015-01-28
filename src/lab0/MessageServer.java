@@ -15,16 +15,18 @@ public class MessageServer implements Runnable {
 	private LinkedBlockingQueue<Message> incomingBuffer = null;
 	private Map<String, Node> nodeMap = null;
 	private Map<String, Socket> socketMap = null;
-	
+	private RuleManager ruleManager = null;
 	
 	public MessageServer(ServerSocket listener, 
 			LinkedBlockingQueue<Message> messageBuffer,
 			Map<String, Socket> socketMap,
-			Map<String, Node> nodeMap) {
+			Map<String, Node> nodeMap,
+			RuleManager ruleManager) {
 		this.listener = listener;
 		this.incomingBuffer = messageBuffer;
 		this.socketMap = socketMap;
 		this.nodeMap = nodeMap;
+		this.ruleManager = ruleManager;
 	}
 	
 	@Override
@@ -52,7 +54,7 @@ public class MessageServer implements Runnable {
 				
 				Node node = this.nodeMap.get(src);
 				socketMap.put(src, socket);
-				Thread client = new Thread(new MessageClient(node, incomingBuffer, socketMap, null));
+				Thread client = new Thread(new MessageClient(node, incomingBuffer, socketMap, null, ruleManager));
 				client.start();
 				
 			} catch (IOException e) {

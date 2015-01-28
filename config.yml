@@ -22,16 +22,21 @@ configuration :
     port : 1987
 
 sendRules :
-  - action : drop # Ack message number 4 from bob to alice will not be sent
+  - action : delay # Ack message number 4 from bob to alice will not be sent
     src : bob
     dest : alice
-    kind : Ack
+    kind : Ackxxx
 #    seqNum : 4
-  - action : delay # Every Lookup message in the system will be delayed
-    kind : Lookup
+  - action : drop # Every Lookup message in the system will be delayed
+    kind : Lookup 
 
 
 receiveRules :
-  - action : duplicate # 3rd message from Charlie that anyone
+  - action : drop # 3rd message from Charlie that anyone
     src : charlie # receives will be duplicated
     seqNum : 3
+    kind : Lookup
+  - action : delay # Ack message number 4 from bob to alice will not be sent
+    src : bob
+    dest : alice
+    kind : Ack

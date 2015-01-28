@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayDeque;
 import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import datatype.Node;
+import datatype.Rule;
 
 public class MessageClient implements Runnable {
 	private LinkedBlockingQueue<Message> incomingBuffer = null;
@@ -15,16 +18,21 @@ public class MessageClient implements Runnable {
 	private Socket socket = null;
 	private Node destNode = null;
 	private String localName = null;
+	private Queue<Message> messageQueue=null;
+	private RuleManager ruleManager = null;
 	
 	public MessageClient(Node destNode, 
 			LinkedBlockingQueue<Message> messageBuffer, 
 			Map<String, Socket> socketMap,
-			String localName) {
+			String localName,
+			RuleManager ruleManager) {
 		this.incomingBuffer = messageBuffer;
 		this.socketMap = socketMap;
 		this.destNode = destNode;
 		this.localName = localName;
 		this.socket = this.socketMap.get(destNode.getName());
+		this.messageQueue = new ArrayDeque<Message>();
+		this.ruleManager = ruleManager;
 	}
 	
 	@Override
@@ -59,7 +67,37 @@ public class MessageClient implements Runnable {
 			try {
 				ois = new ObjectInputStream(socket.getInputStream());
 				Message msg = (Message)ois.readObject();
-				this.incomingBuffer.put(msg);
+				Rule matchRule = ruleManager.matchReceiveRule(msg);
+				
+				if (matchRule != null) {
+					System.out.println("matchRule = "+matchRule.getAction());
+					switch (matchRule.getAction()) {
+					case drop:
+						while(!messageQueue.isEmpty()) {
+							this.incomingBuffer.put(messageQueue.remove());
+						}
+						break;
+					case duplicate:
+						/* duplicate field is already set in clone */
+					
+						Message duplicateMsg = msg.clone();
+						this.incomingBuffer.add(msg);
+						this.incomingBuffer.add(duplicateMsg);
+						while(!messageQueue.isEmpty()) {
+							this.incomingBuffer.put(messageQueue.remove());
+						}
+						break;
+					case delay:
+						messageQueue.add(msg);
+						break;
+					}
+				} else {
+					while(!messageQueue.isEmpty()) {
+						this.incomingBuffer.put(messageQueue.remove());
+					}
+					this.incomingBuffer.put(msg);
+				}
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 				break;

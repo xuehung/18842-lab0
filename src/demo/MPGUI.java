@@ -129,9 +129,7 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		Thread thread = new Thread() {
 			public void run() {
 				while (true) {
-					System.out.println("receive is called");
 					Message m = mp.receive();
-					System.out.println("receive returns");
 					if (m != null) {
 						try {
 							document.insertBeforeEnd(document.getElement("body"), 
