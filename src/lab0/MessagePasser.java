@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import datatype.Action;
@@ -31,7 +33,7 @@ public class MessagePasser {
 	private Map<String, Socket> socketMap = null;
 	private ConfigLoader configLoader = null;
 	private int seqNumCounter = 0;
-	
+	private Queue<Message> messageQueue=null;
 	public MessagePasser(String configFilename, String localName) throws IOException {
 		
 		System.out.printf("##### MessagePasser(name: %s) is initialized #####\n\n", localName);
@@ -45,7 +47,7 @@ public class MessagePasser {
 		this.sendRules = new ArrayList<Rule>();
 		this.receiveRules = new ArrayList<Rule>();
 		this.socketMap = new HashMap<String, Socket>();
-		
+		this.messageQueue=new ArrayDeque<Message>();
 		/* parse configuration */
 		this.loadConfig();
 		
@@ -136,6 +138,7 @@ public class MessagePasser {
 		if (message == null) {
 			return;
 		}
+		
 		message.setSource(this.localName);
 		message.setSeqNum(++seqNumCounter);
 		this.checkConfigReload();
@@ -146,18 +149,28 @@ public class MessagePasser {
 			System.out.println("matchRule = "+matchRule.getAction());
 			switch (matchRule.getAction()) {
 			case drop:
+				while(!messageQueue.isEmpty()) {
+					this.outgoingBuffer.add(messageQueue.remove());
+				}
 				return;
+				
 			case duplicate:
 				/* duplicate field is already set in clone */
+				while(!messageQueue.isEmpty()) {
+					this.outgoingBuffer.add(messageQueue.remove());
+				}
 				Message duplicateMsg = message.clone();
 				this.outgoingBuffer.add(message);
 				this.outgoingBuffer.add(duplicateMsg);
 				break;
 			case delay:
-				
+				messageQueue.add(message);
 				break;
 			}
 		} else {
+			while(!messageQueue.isEmpty()) {
+				this.outgoingBuffer.add(messageQueue.remove());
+			}
 			this.outgoingBuffer.add(message);
 		}
 	}
