@@ -37,11 +37,15 @@ public class MessageClient implements Runnable {
 	@Override
 	public void run() {
 		/*
-		 * When run() is called, there are two situations 1) socket already
-		 * exists 2) we need to create the socket
+		 * When run() is called, there are two situations 
+		 * 1) socket already exists 
+		 * 2) we need to create the socket
 		 */
 		while (true) {
-			/* create the socket */
+			if (destNode.getName().compareTo(this.localName) < 0 && socket == null) {
+				break;
+			}
+			/* create the socket by small name */
 			if (destNode.getName().compareTo(this.localName) > 0) {
 				while (!socketMap.containsKey(destNode.getName())) {
 					try {
@@ -105,6 +109,7 @@ public class MessageClient implements Runnable {
 				} catch (IOException e) {
 					System.err.println("socket dropped!");
 					this.socketMap.remove(destNode.getName());
+					socket = null;
 					break;
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
