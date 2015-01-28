@@ -8,17 +8,17 @@
 
 configuration :
   - name : alice
-    ip : 127.0.0.1
+    ip : 128.237.219.12
     port : 12344 # This is the incoming port on which MP will listen
                  # May be changed for further communication as usual
   - name : bob
-    ip : 127.0.0.1
+    ip : 128.237.219.12
     port : 14255
   - name : charlie
-    ip : 127.0.0.1
+    ip : 128.237.177.195
     port : 12998
   - name : daphnie
-    ip : 127.0.0.1
+    ip : 128.237.177.195
     port : 1987
 
 sendRules :

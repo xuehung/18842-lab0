@@ -11,6 +11,7 @@ import datatype.Node;
 
 public class MessageServer implements Runnable {
 
+	private String localName = null;
 	private ServerSocket listener = null;
 	private LinkedBlockingQueue<Message> incomingBuffer = null;
 	private Map<String, Node> nodeMap = null;
@@ -21,12 +22,14 @@ public class MessageServer implements Runnable {
 			LinkedBlockingQueue<Message> messageBuffer,
 			Map<String, Socket> socketMap,
 			Map<String, Node> nodeMap,
-			RuleManager ruleManager) {
+			RuleManager ruleManager,
+			String localName) {
 		this.listener = listener;
 		this.incomingBuffer = messageBuffer;
 		this.socketMap = socketMap;
 		this.nodeMap = nodeMap;
 		this.ruleManager = ruleManager;
+		this.localName = localName;
 	}
 	
 	@Override
@@ -54,7 +57,7 @@ public class MessageServer implements Runnable {
 				
 				Node node = this.nodeMap.get(src);
 				socketMap.put(src, socket);
-				Thread client = new Thread(new MessageClient(node, incomingBuffer, socketMap, null, ruleManager));
+				Thread client = new Thread(new MessageClient(node, incomingBuffer, socketMap, localName, ruleManager));
 				client.start();
 				
 			} catch (IOException e) {

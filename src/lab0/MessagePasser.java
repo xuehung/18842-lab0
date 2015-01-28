@@ -89,7 +89,7 @@ public class MessagePasser {
 		this.listener = new ServerSocket(port);
 		Thread serverThread = new Thread(new MessageServer(this.listener,
 				this.incomingBuffer, this.socketMap, this.nodeMap,
-				this.ruleManager));
+				this.ruleManager, localName));
 		serverThread.start();
 	}
 	

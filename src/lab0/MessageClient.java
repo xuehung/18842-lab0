@@ -18,13 +18,12 @@ public class MessageClient implements Runnable {
 	private Socket socket = null;
 	private Node destNode = null;
 	private String localName = null;
-	private Queue<Message> messageQueue=null;
+	private Queue<Message> messageQueue = null;
 	private RuleManager ruleManager = null;
-	
-	public MessageClient(Node destNode, 
-			LinkedBlockingQueue<Message> messageBuffer, 
-			Map<String, Socket> socketMap,
-			String localName,
+
+	public MessageClient(Node destNode,
+			LinkedBlockingQueue<Message> messageBuffer,
+			Map<String, Socket> socketMap, String localName,
 			RuleManager ruleManager) {
 		this.incomingBuffer = messageBuffer;
 		this.socketMap = socketMap;
@@ -34,77 +33,84 @@ public class MessageClient implements Runnable {
 		this.messageQueue = new ArrayDeque<Message>();
 		this.ruleManager = ruleManager;
 	}
-	
+
 	@Override
 	public void run() {
 		/*
-		 * When run() is called, there are two situations
-		 * 	1) socket already exists
-		 * 	2) we need to create the socket
+		 * When run() is called, there are two situations 1) socket already
+		 * exists 2) we need to create the socket
 		 */
-		/* create the socket */
-		while (!socketMap.containsKey(destNode.getName())) {
-			try {
-				socket = new Socket(destNode.getIp(), destNode.getPort());
+		while (true) {
+			/* create the socket */
+			if (destNode.getName().compareTo(this.localName) > 0) {
+				while (!socketMap.containsKey(destNode.getName())) {
+					try {
+						socket = new Socket(destNode.getIp(),
+								destNode.getPort());
+						try {
+							ObjectOutputStream oos = new ObjectOutputStream(
+									socket.getOutputStream());
+							Message message = new Message(destNode.getName(),
+									null, null);
+							message.setSource(localName);
+							oos.writeObject(message);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					} catch (Exception e) {
+						continue;
+					}
+					socketMap.put(destNode.getName(), socket);
+				}
+			}
+
+			/* listen for incoming messages */
+			while (true) {
+				ObjectInputStream ois;
 				try {
-					ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-					Message message = new Message(destNode.getName(), null, null);
-					message.setSource(localName);
-					oos.writeObject(message);
+					ois = new ObjectInputStream(socket.getInputStream());
+					Message msg = (Message) ois.readObject();
+					Rule matchRule = ruleManager.matchReceiveRule(msg);
+
+					if (matchRule != null) {
+						System.out.println("matchRule = "
+								+ matchRule.getAction());
+						switch (matchRule.getAction()) {
+						case drop:
+							while (!messageQueue.isEmpty()) {
+								this.incomingBuffer.put(messageQueue.remove());
+							}
+							break;
+						case duplicate:
+							/* duplicate field is already set in clone */
+
+							Message duplicateMsg = msg.clone();
+							this.incomingBuffer.add(msg);
+							this.incomingBuffer.add(duplicateMsg);
+							while (!messageQueue.isEmpty()) {
+								this.incomingBuffer.put(messageQueue.remove());
+							}
+							break;
+						case delay:
+							messageQueue.add(msg);
+							break;
+						}
+					} else {
+						while (!messageQueue.isEmpty()) {
+							this.incomingBuffer.put(messageQueue.remove());
+						}
+						this.incomingBuffer.put(msg);
+					}
+
 				} catch (IOException e) {
+					System.err.println("socket dropped!");
+					this.socketMap.remove(destNode.getName());
+					break;
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				continue;
-			}
-			socketMap.put(destNode.getName(), socket);
-		}
-		
-		
-		/* listen for incoming messages */
-		while (true) {
-			ObjectInputStream ois;
-			try {
-				ois = new ObjectInputStream(socket.getInputStream());
-				Message msg = (Message)ois.readObject();
-				Rule matchRule = ruleManager.matchReceiveRule(msg);
-				
-				if (matchRule != null) {
-					System.out.println("matchRule = "+matchRule.getAction());
-					switch (matchRule.getAction()) {
-					case drop:
-						while(!messageQueue.isEmpty()) {
-							this.incomingBuffer.put(messageQueue.remove());
-						}
-						break;
-					case duplicate:
-						/* duplicate field is already set in clone */
-					
-						Message duplicateMsg = msg.clone();
-						this.incomingBuffer.add(msg);
-						this.incomingBuffer.add(duplicateMsg);
-						while(!messageQueue.isEmpty()) {
-							this.incomingBuffer.put(messageQueue.remove());
-						}
-						break;
-					case delay:
-						messageQueue.add(msg);
-						break;
-					}
-				} else {
-					while(!messageQueue.isEmpty()) {
-						this.incomingBuffer.put(messageQueue.remove());
-					}
-					this.incomingBuffer.put(msg);
-				}
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-				break;
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
 		}
 	}
