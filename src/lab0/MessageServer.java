@@ -5,7 +5,6 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import datatype.Node;
 
@@ -13,19 +12,19 @@ public class MessageServer implements Runnable {
 
 	private String localName = null;
 	private ServerSocket listener = null;
-	private LinkedBlockingQueue<Message> incomingBuffer = null;
+	private BufferManager bufferManager = null;
 	private Map<String, Node> nodeMap = null;
 	private Map<String, Socket> socketMap = null;
 	private RuleManager ruleManager = null;
 	
 	public MessageServer(ServerSocket listener, 
-			LinkedBlockingQueue<Message> messageBuffer,
+			BufferManager bufferManager,
 			Map<String, Socket> socketMap,
 			Map<String, Node> nodeMap,
 			RuleManager ruleManager,
 			String localName) {
 		this.listener = listener;
-		this.incomingBuffer = messageBuffer;
+		this.bufferManager = bufferManager;
 		this.socketMap = socketMap;
 		this.nodeMap = nodeMap;
 		this.ruleManager = ruleManager;
@@ -57,7 +56,7 @@ public class MessageServer implements Runnable {
 				
 				Node node = this.nodeMap.get(src);
 				socketMap.put(src, socket);
-				Thread client = new Thread(new MessageClient(node, incomingBuffer, socketMap, localName, ruleManager));
+				Thread client = new Thread(new MessageClient(node, bufferManager, socketMap, localName, ruleManager));
 				client.start();
 				
 			} catch (IOException e) {

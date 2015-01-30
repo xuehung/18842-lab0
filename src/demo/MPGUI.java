@@ -1,6 +1,5 @@
 package demo;
 
-import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -134,7 +133,7 @@ public class MPGUI implements Runnable {//implements ActionListener {
 						try {
 							document.insertBeforeEnd(document.getElement("body"), 
 									"<div align='left'>"
-									+ "<p>"+m.getSrc()+":<br>"
+									+ String.format("<p>%s:(%s/%d)<br>",m.getSrc(), m.getKind(), m.getSeqNum())
 									+m.getData()+"</p></div><hr>");
 						} catch (BadLocationException e) {
 							e.printStackTrace();

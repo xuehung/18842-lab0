@@ -5,32 +5,24 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayDeque;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 import datatype.Node;
 import datatype.Rule;
 
 public class MessagePasser {
-	
-	final private int BUFFER_LEN = 1000; 
-	
+		
 	private String configFilename = null;
 	private String localName = null;
-	private LinkedBlockingQueue<Message> incomingBuffer = null;
-	private LinkedBlockingQueue<Message> outgoingBuffer = null;
 	private Map<String, Node> nodeMap = null;
+	private Map<String, Socket> socketMap = null;
+	
+	private BufferManager bufferManager = null;
+	private RuleManager ruleManager = null;
+	private ConfigLoader configLoader = null;
 	
 	private ServerSocket listener = null;
-	private Map<String, Socket> socketMap = null;
-	private ConfigLoader configLoader = null;
 	private int seqNumCounter = 0;
-	private Queue<Message> messageQueue=null;
-	private RuleManager ruleManager = null;
-	
 	
 	public MessagePasser(String configFilename, String localName) throws IOException {
 		
@@ -39,11 +31,10 @@ public class MessagePasser {
 		/* set instance variables */
 		this.configFilename = configFilename;
 		this.localName = localName;
-		this.incomingBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
-		this.outgoingBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
 		this.nodeMap = new HashMap<String, Node>();
 		this.socketMap = new HashMap<String, Socket>();
-		this.messageQueue=new ArrayDeque<Message>();
+		this.bufferManager = new BufferManager();
+		
 		/* parse configuration */
 		this.loadConfig();
 		
@@ -64,7 +55,7 @@ public class MessagePasser {
 		for (String name : this.nodeMap.keySet()) {
 			if (name.compareTo(this.localName) > 0) {				
 				Node destNode = this.nodeMap.get(name);
-				Thread client = new Thread(new MessageClient(destNode, incomingBuffer, socketMap, localName, ruleManager));
+				Thread client = new Thread(new MessageClient(destNode, bufferManager, socketMap, localName, ruleManager));
 				client.start();
 			}
 		}
@@ -88,7 +79,7 @@ public class MessagePasser {
 	private void createServerSocket(int port) throws IOException {
 		this.listener = new ServerSocket(port);
 		Thread serverThread = new Thread(new MessageServer(this.listener,
-				this.incomingBuffer, this.socketMap, this.nodeMap,
+				bufferManager, this.socketMap, this.nodeMap,
 				this.ruleManager, localName));
 		serverThread.start();
 	}
@@ -98,23 +89,18 @@ public class MessagePasser {
 		Thread sendingThread = new Thread() {
 			public void run() {
 				while (true) {
-					Iterator<Message> it = outgoingBuffer.iterator();
-					while (it.hasNext()) {
-						Message message = it.next();
-						if (socketMap.containsKey(message.getDest())) {
-							outgoingBuffer.remove(message);
-							// send
-							Socket socket = socketMap.get(message.getDest());
-							try {
-								ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-								message.setSource(localName);
-								oos.writeObject(message);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
+					Message message = bufferManager.takeFromOutgoingBuffer(socketMap);
+					if (message != null) {
+						Socket socket = socketMap.get(message.getDest());
+						try {
+							ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+							message.setSource(localName);
+							oos.writeObject(message);
+						} catch (IOException e) {
+							e.printStackTrace();
+							bufferManager.addToOutgoingBuffer(message);
+						}		
 					}
-					
 				}
 			}
 		};
@@ -128,7 +114,7 @@ public class MessagePasser {
 		}
 		
 		message.setSource(this.localName);
-		message.setSeqNum(++seqNumCounter);
+		message.setSeqNum(seqNumCounter++);
 		
 		Rule matchRule = ruleManager.matchSendRule(message);
 		System.out.println("matchRule = "+matchRule);
@@ -136,29 +122,21 @@ public class MessagePasser {
 			System.out.println("matchRule = "+matchRule.getAction());
 			switch (matchRule.getAction()) {
 			case drop:
-				while(!messageQueue.isEmpty()) {
-					this.outgoingBuffer.add(messageQueue.remove());
-				}
 				return;
-				
 			case duplicate:
 				/* duplicate field is already set in clone */
-				while(!messageQueue.isEmpty()) {
-					this.outgoingBuffer.add(messageQueue.remove());
-				}
 				Message duplicateMsg = message.clone();
-				this.outgoingBuffer.add(message);
-				this.outgoingBuffer.add(duplicateMsg);
+				bufferManager.addToOutgoingBuffer(message);
+				bufferManager.addToOutgoingBuffer(duplicateMsg);
+				bufferManager.clearDelayOutgoingMessage();
 				break;
 			case delay:
-				messageQueue.add(message);
+				bufferManager.delayOutgoingMessage(message);
 				break;
 			}
 		} else {
-			while(!messageQueue.isEmpty()) {
-				this.outgoingBuffer.add(messageQueue.remove());
-			}
-			this.outgoingBuffer.add(message);
+			bufferManager.addToOutgoingBuffer(message);
+			bufferManager.clearDelayOutgoingMessage();
 		}
 	}
 
@@ -166,12 +144,7 @@ public class MessagePasser {
 	 * If no message is available in the buffer, this method blocks
 	 */
 	public Message receive() {
-		try {
-			return this.incomingBuffer.take();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return bufferManager.takeFromIncomingBuffer();
 	}
 	
 }
