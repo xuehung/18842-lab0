@@ -29,6 +29,7 @@ public class MessagePasser {
 	private ConfigLoader configLoader = null;
 	
 	private ServerSocket listener = null;
+	private ClockService clockService = null;
 	private int seqNumCounter = 0;
 
 	public MessagePasser(String configFilename, String localName) throws IOException {
@@ -55,6 +56,7 @@ public class MessagePasser {
 		
 		/* create the thread responsible for sending messages */
 		this.createSendingThread();
+		
 		
 	}
 	private void createClientSocket() throws IOException {
@@ -115,7 +117,7 @@ public class MessagePasser {
 
 	public void send(Message message) {
 		System.out.println("send is called");
-		if (message == null) {
+		if (message == null || !this.nodeMap.containsKey(message.getDest())) {
 			return;
 		}
 		
@@ -151,6 +153,15 @@ public class MessagePasser {
 	 */
 	public Message receive() {
 		return bufferManager.takeFromIncomingBuffer();
+	}
+	
+	public void logEvent(String text) {
+		if (nodeMap.containsKey(ConfigLoader.logger)) {
+			if (clockService != null) {
+				TimeStampedMessage message = new TimeStampedMessage(ConfigLoader.logger, null, text);
+				this.send(message);
+			}
+		}
 	}
 	
 

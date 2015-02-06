@@ -19,6 +19,7 @@ import javax.swing.text.html.HTMLDocument;
 
 import datatype.Message;
 import datatype.Node;
+import datatype.TimeStampedMessage;
 import lab0.ConfigLoader;
 import lab0.MessagePasser;
 
@@ -87,28 +88,54 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		input.addKeyListener(new KeyListener() {
 		    public void keyPressed(KeyEvent e) {
 		        if(e.getKeyCode() == KeyEvent.VK_ENTER){
-		        		String text = input.getText();
-		        		String kind = kindField.getText();
-		        		String dest = (String)menu.getSelectedItem();
+		        		String cmd = input.getText();
 		        		
 		        		input.setText("");
 					try {
 						document.insertBeforeEnd(document.getElement("body"), 
 								"<div align='right'>"
-								+ "<p>"+localName+":<br>"
-								+text+"</p></div><hr>");
+								+ "<p>"+cmd+":<br>");
 					} catch (BadLocationException e1) {
 						e1.printStackTrace();
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-		        		//document.insertString(arg0, arg1, arg2);.append(String.format("-> %s(%s)\n%s\n\n", dest, kind, text));
-		        		System.out.println(output.getDocument().getLength());
-		        		
+					
 					output.setCaretPosition(output.getDocument().getLength());
 		        		e.consume();
-		        		Message m = new Message(dest, kind, text);
-		        		mp.send(m);
+		        		
+		        		String[] tokens = cmd.split(" ");
+		        		if (tokens.length > 0) {
+		        			String cmdType = tokens[0];
+		        			if ("send".equals(cmdType)) {
+		        				String dest = null;
+		        				String kind = null;
+		        				String text = null;
+		        				if (tokens.length >= 4) {
+		        					boolean needLog = false;
+		        					if ("-l".equals(tokens[1]) && tokens.length >= 5) {
+		        						dest = tokens[2];
+		        						kind = tokens[3];
+		        						text = tokens[4];
+		        						needLog = true;
+		        					} else {
+		        						dest = tokens[1];
+		        						kind = tokens[2];
+		        						text = tokens[3];
+		        					}
+		        					TimeStampedMessage message = new TimeStampedMessage(dest, kind, text);
+		        					mp.send(message);
+		        					if (needLog) {
+		        						mp.logEvent(String.format("%s sent to %s", localName, dest));
+		        					}
+		        				}
+		        			} else if ("log".equals(cmdType)) {
+		        				if (tokens.length > 1) {
+		        					String logText = tokens[1];
+		        					mp.logEvent(logText);
+		        				}
+		        			}
+		        		}		
 		        }
 		    }
 
