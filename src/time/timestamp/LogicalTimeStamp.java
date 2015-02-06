@@ -1,10 +1,11 @@
-package time;
+package time.timestamp;
 
 public class LogicalTimeStamp extends TimeStamp {
 	private int time;
 	
-	public LogicalTimeStamp(int counter) {
+	public LogicalTimeStamp(int counter, String localName) {
 		this.time = counter;
+		this.localName = localName;
 	}
 	
 	/*

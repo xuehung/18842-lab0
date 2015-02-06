@@ -5,15 +5,13 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import time.ClockFactory;
-import time.ClockService;
-import time.ClockType;
-import time.TimeStamp;
+import time.clock.ClockFactory;
+import time.clock.ClockService;
+import time.clock.ClockType;
+import time.timestamp.TimeStamp;
 import datatype.Node;
 import datatype.Rule;
 
@@ -58,7 +56,6 @@ public class MessagePasser {
 		
 	}
 	private void createClientSocket() throws IOException {
-		
 		for (String name : this.nodeMap.keySet()) {
 			if (name.compareTo(this.localName) > 0) {				
 				Node destNode = this.nodeMap.get(name);

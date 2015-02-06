@@ -1,4 +1,4 @@
-package time;
+package time.timestamp;
 
 import java.util.Arrays;
 
