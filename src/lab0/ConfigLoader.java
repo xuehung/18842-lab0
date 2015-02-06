@@ -12,17 +12,21 @@ import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
 
+import time.clock.ClockType;
 import datatype.Action;
 import datatype.Node;
 import datatype.Rule;
 
 public class ConfigLoader {
+	
+	public final static String logger = "logger";
 
 	private Map<String, List<LinkedHashMap<String, Object>>> config = null;
 	private Map<String, Node> nodeMap = null;
 	private List<Rule> sendRules = null;
 	private List<Rule> receiveRules = null;
 	private File configFile = null;
+	Object yamlObject = null;
 	private long lastModified = 0;
 	
 	@SuppressWarnings("unchecked")
@@ -32,8 +36,10 @@ public class ConfigLoader {
 		InputStream input = null;
 		input = new FileInputStream(this.configFile);
 	    Yaml yaml = new Yaml();
+	    yamlObject = yaml.load(input);
 	    
-		this.config = (Map<String, List<LinkedHashMap<String, Object>>>) yaml.load(input);
+	    
+		this.config = (Map<String, List<LinkedHashMap<String, Object>>>) yamlObject;
 	}
 	
 	/*
@@ -128,4 +134,10 @@ public class ConfigLoader {
 	    System.out.printf("%d rules are loaded\n", ruleList.size());
 	}
 	
+	public ClockType getClockType() {
+		@SuppressWarnings("unchecked")
+		String clock = ((Map<String, String>)(this.yamlObject)).get("clock");
+		return (ClockType.LOGICAL.toString().toLowerCase().equals(clock)) ? 
+				ClockType.LOGICAL : ClockType.VECTOR;
+	}
 }

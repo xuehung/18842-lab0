@@ -17,10 +17,17 @@ public class LogicalTimeStamp extends TimeStamp {
 	}
 	*/
 	
+
 	@Override
-	public boolean compareTo(TimeStamp t) {
-		return false;
-				
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int compareTo(TimeStamp t) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

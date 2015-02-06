@@ -18,9 +18,14 @@ public class VectorTimeStamp extends TimeStamp {
 	}
 
 	@Override
-	public boolean compareTo(TimeStamp t) {
+	public String toString() {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
+	}
+	@Override
+	public int compareTo(TimeStamp t) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

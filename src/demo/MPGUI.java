@@ -17,9 +17,9 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 
+import datatype.Message;
 import datatype.Node;
 import lab0.ConfigLoader;
-import lab0.Message;
 import lab0.MessagePasser;
 
 public class MPGUI implements Runnable {//implements ActionListener {

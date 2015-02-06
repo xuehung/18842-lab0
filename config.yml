@@ -6,6 +6,9 @@
 # These names will be used for src and dest addresses for the Message
 # The local node’s name is included in this list
 
+clock: logical # logical or vector
+
+# The logger's name must be logger
 configuration :
   - name : alice
     ip : 128.237.217.66
@@ -20,16 +23,21 @@ configuration :
   - name : daphnie
     ip : 128.237.183.23
     port : 1987
+  - name : logger
+    ip : 128.237.183.23
+    port : 1989
 
 sendRules :
-#  - action : delay # Ack message number 4 from bob to alice will not be sent
-#    src : bob 
-#    dest : alice
-#    kind : Ackxxx
-#    seqNum : 4
+  - action : delay # Ack message number 4 from bob to alice will not be sent
+    src : bob 
+    dest : alice
+    kind : Ackxxx
+    seqNum : 4
   - action : duplicate
     kind : test4
 
 
 receiveRules :
+  - action : duplicate
+    kind : test4
 

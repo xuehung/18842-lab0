@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Map;
 
+import datatype.Message;
 import datatype.Node;
 import datatype.Rule;
 

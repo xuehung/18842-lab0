@@ -2,6 +2,7 @@ package lab0;
 
 import java.util.List;
 
+import datatype.Message;
 import datatype.Rule;
 
 public class RuleFilter {

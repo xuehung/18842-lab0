@@ -2,6 +2,8 @@ package lab0;
 
 import java.io.IOException;
 
+import datatype.Message;
+
 public class Test {
 
 	public static void main(String[] argv) throws IOException {

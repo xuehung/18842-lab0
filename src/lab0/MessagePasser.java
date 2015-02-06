@@ -12,8 +12,10 @@ import time.clock.ClockFactory;
 import time.clock.ClockService;
 import time.clock.ClockType;
 import time.timestamp.TimeStamp;
+import datatype.Message;
 import datatype.Node;
 import datatype.Rule;
+import datatype.TimeStampedMessage;
 
 public class MessagePasser {
 		
@@ -67,7 +69,7 @@ public class MessagePasser {
 	}
 	private void loadConfig() throws FileNotFoundException {
 		this.configLoader = new ConfigLoader(this.configFilename);
-		
+		configLoader.getClockType();
 	    /* configuration */
 		this.nodeMap = configLoader.getNodeMap();
 		this.ruleManager = new RuleManager(configLoader);

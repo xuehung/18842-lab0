@@ -1,4 +1,4 @@
-package lab0;
+package datatype;
 
 import time.timestamp.TimeStamp;
 
