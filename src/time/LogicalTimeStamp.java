@@ -15,7 +15,9 @@ public class LogicalTimeStamp extends TimeStamp {
 	
 	}
 	*/
-	
+	public int[] getTime() {
+		return null;
+	}
 	@Override
 	public boolean compareTo(TimeStamp t) {
 		return false;
