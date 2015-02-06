@@ -8,17 +8,17 @@
 
 configuration :
   - name : alice
-    ip : 127.0.0.1
+    ip : 128.237.217.66
     port : 12344 # This is the incoming port on which MP will listen
                  # May be changed for further communication as usual
   - name : bob
-    ip : 127.0.0.1
+    ip : 128.237.217.66
     port : 14255
   - name : charlie
-    ip : 127.0.0.1
+    ip : 128.237.183.23
     port : 12998
   - name : daphnie
-    ip : 128.237.177.195
+    ip : 128.237.183.23
     port : 1987
 
 sendRules :
@@ -28,16 +28,8 @@ sendRules :
 #    kind : Ackxxx
 #    seqNum : 4
   - action : duplicate
-    kind : DUP
+    kind : test4
 
 
 receiveRules :
-  #- action : drop # 3rd message from Charlie that anyone
-  #  src : charlie # receives will be duplicated
-  #  seqNum : 3
-  #  kind : Lookup
-  - action : drop # Ack message number 4 from bob to alice will not be sent
-    src : bob
-    dest : alice
-    duplicate: true
-    kind: xxx
+

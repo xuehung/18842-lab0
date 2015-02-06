@@ -72,7 +72,14 @@ public class ConfigLoader {
 		}
 		return this.nodeMap;
 	}
-	
+	public List<String> getNodeList() {
+		List<String> nodeList = new ArrayList<String>(this.nodeMap.size());
+		int i=0;
+		for (String key: this.nodeMap.keySet())
+			nodeList.set(i++, key);
+		java.util.Collections.sort(nodeList);
+		return nodeList;
+	}
 	public List<Rule> getSendRules() {
 		this.sendRules = new ArrayList<Rule>();
 		

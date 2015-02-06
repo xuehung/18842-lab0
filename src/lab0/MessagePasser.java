@@ -5,8 +5,15 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import time.ClockFactory;
+import time.ClockService;
+import time.ClockType;
+import time.TimeStamp;
 import datatype.Node;
 import datatype.Rule;
 
@@ -23,7 +30,7 @@ public class MessagePasser {
 	
 	private ServerSocket listener = null;
 	private int seqNumCounter = 0;
-	
+
 	public MessagePasser(String configFilename, String localName) throws IOException {
 		
 		System.out.printf("##### MessagePasser(name: %s) is initialized #####\n\n", localName);
@@ -146,5 +153,20 @@ public class MessagePasser {
 	public Message receive() {
 		return bufferManager.takeFromIncomingBuffer();
 	}
+	
+
+	public void example() {
+		ClockService clock = ClockFactory.getClockInstance(ClockType.LOGICAL,null,null);
+		ClockService clock2=ClockFactory.getClockInstance(ClockType.VECTOR, this.configLoader.getNodeList(), this.localName);
+		TimeStamp timestamp = clock.getTime();
+		TimeStamp timestamp2 = clock2.getTime();
+		TimeStampedMessage msg = new TimeStampedMessage("dest", "kind", null);
+		msg.setTimestamp(timestamp);
+		this.send(msg);
+	}
+	
+	
+	
+	
 	
 }
