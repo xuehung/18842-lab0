@@ -26,13 +26,16 @@ public class VectorClock extends ClockService {
 
 	@Override
 	public TimeStamp getTime(TimeStamp t) {
-		int[] outVector=t.getTime();
-		for(int i = 0; i < size; i++) {
-			if (i == localPos) 
-					this.vector[i]++;
-			else if (outVector[i] > this.vector[i]) 
-				this.vector[i] = outVector[i];
+		if (t instanceof VectorTimeStamp) {
+			int[] outVector = ((VectorTimeStamp)t).getTime();
+			for(int i = 0; i < size; i++) {
+				if (i == localPos) 
+						this.vector[i]++;
+				else if (outVector[i] > this.vector[i]) 
+					this.vector[i] = outVector[i];
+			}
+			return new VectorTimeStamp(this.vector);
 		}
-		return new VectorTimeStamp(this.vector);
+		return null;
 	}
 }

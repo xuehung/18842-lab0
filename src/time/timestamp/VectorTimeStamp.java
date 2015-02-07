@@ -19,9 +19,9 @@ public class VectorTimeStamp extends TimeStamp {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return null;
 	}
+	
 	@Override
 	public int compareTo(TimeStamp t) {
 		// TODO Auto-generated method stub

@@ -17,8 +17,7 @@ public class LogicalClock extends ClockService {
 
 	@Override
 	public TimeStamp getTime(TimeStamp t) {
-		// TODO Auto-generated method stub
-		return null;
+		return new LogicalTimeStamp(counter++, localName);
 	}
 	
 }

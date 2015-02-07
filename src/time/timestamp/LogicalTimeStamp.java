@@ -20,8 +20,7 @@ public class LogicalTimeStamp extends TimeStamp {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return ""+time;
 	}
 
 	@Override
@@ -29,5 +28,12 @@ public class LogicalTimeStamp extends TimeStamp {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public Object getTime() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

@@ -10,6 +10,5 @@ public abstract class ClockService {
 	 * when a message is received
 	 */
 	public abstract TimeStamp getTime(TimeStamp t);
-	
 		
 }
