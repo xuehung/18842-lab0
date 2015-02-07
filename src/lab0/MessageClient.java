@@ -77,7 +77,7 @@ public class MessageClient implements Runnable {
 					Message message = (Message) ois.readObject();
 					if (message instanceof TimeStampedMessage) {
 						clockService = ClockFactory.getClockInstance();
-						TimeStamp ts = clockService.getTime();
+						TimeStamp ts = clockService.getTime(((TimeStampedMessage) message).getTimestamp());
 						((TimeStampedMessage)message).setTimestamp(ts);
 					}
 					Rule matchRule = ruleManager.matchReceiveRule(message);
