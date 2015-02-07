@@ -13,6 +13,7 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 
+import datatype.LogEvent;
 import datatype.Message;
 import datatype.Node;
 import datatype.TimeStampedMessage;
@@ -100,11 +101,14 @@ public class LoggerGUI implements Runnable {//implements ActionListener {
 				if (i >= 1 && messageArray[i - 1].compareTo(currentMessage) == 0) {
 					document.insertBeforeEnd(document.getElement("body"), "<hr>");
 				}
-				document.insertBeforeEnd(document.getElement("body"), 
-						"<p>"
-						+ currentMessage.getTimestamp().toString()+"<br>"	
-						+ currentMessage.getData()
-						+"</p>");
+				if (currentMessage.getData() instanceof LogEvent) {
+					LogEvent e = (LogEvent)currentMessage.getData();
+					document.insertBeforeEnd(document.getElement("body"), 
+							"<p>"
+							+ e.getTimestamp()+"<br>"	
+							+ e.getText()
+							+"</p>");
+				}
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
