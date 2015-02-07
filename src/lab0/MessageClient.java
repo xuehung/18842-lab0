@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Map;
 
+import time.clock.ClockFactory;
 import time.clock.ClockService;
 import time.timestamp.TimeStamp;
 import datatype.Message;
@@ -75,6 +76,7 @@ public class MessageClient implements Runnable {
 					ois = new ObjectInputStream(socket.getInputStream());
 					Message message = (Message) ois.readObject();
 					if (message instanceof TimeStampedMessage) {
+						clockService = ClockFactory.getClockInstance();
 						TimeStamp ts = clockService.getTime();
 						((TimeStampedMessage)message).setTimestamp(ts);
 					}
