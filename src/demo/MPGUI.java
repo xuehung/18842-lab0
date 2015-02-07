@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
@@ -34,8 +32,6 @@ public class MPGUI implements Runnable {//implements ActionListener {
 	private JFrame frame = null;
 	private JTextPane output = null;
 	private JTextArea input = null;
-	private JTextField kindField = null;
-	private JComboBox menu = null;
 	private MessagePasser mp = null;
 	
 	
@@ -66,21 +62,14 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		
 		frame = new JFrame(this.localName);
 		input = new JTextArea(10, 10);
-		kindField = new JTextField();
-		String[] nameStrings = this.nameList.toArray(new String[nameList.size()]);
-		menu = new JComboBox(nameStrings);
 		
 		output.setEditable(false);
 		JScrollPane scroll = new JScrollPane(output);
 		scroll.setSize(400, 700);
 		
-		kindField.setSize(400, 20);
-		kindField.setText("defalt_kind");
 		frame.setSize(400, 800);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 		frame.getContentPane().add(scroll);
-		frame.getContentPane().add(menu);
-		frame.getContentPane().add(kindField);
 		frame.getContentPane().add(input);
 		frame.setVisible(true);
 		
@@ -105,24 +94,32 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		        		e.consume();
 		        		
 		        		String[] tokens = cmd.split(" ");
+		        		System.out.println(tokens.length);
 		        		if (tokens.length > 0) {
 		        			String cmdType = tokens[0];
 		        			if ("send".equals(cmdType)) {
+		        				System.out.println(cmdType);
 		        				String dest = null;
 		        				String kind = null;
 		        				String text = null;
 		        				if (tokens.length >= 4) {
 		        					boolean needLog = false;
+		        					int textPos = 3;
 		        					if ("-l".equals(tokens[1]) && tokens.length >= 5) {
 		        						dest = tokens[2];
 		        						kind = tokens[3];
-		        						text = tokens[4];
 		        						needLog = true;
+		        						textPos = 4;
 		        					} else {
 		        						dest = tokens[1];
 		        						kind = tokens[2];
-		        						text = tokens[3];
 		        					}
+		        					for (text = tokens[textPos++]; textPos < tokens.length ; textPos++) {
+		        						text += (" " + tokens[textPos]);
+		        					}
+		        					System.out.println(dest);
+		        					System.out.println(kind);
+		        					System.out.println(text);
 		        					TimeStampedMessage message = new TimeStampedMessage(dest, kind, text);
 		        					mp.send(message);
 		        					if (needLog) {
