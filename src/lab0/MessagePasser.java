@@ -45,6 +45,11 @@ public class MessagePasser {
 		/* parse configuration */
 		this.loadConfig();
 		
+		if (configLoader.getClockType() != null) {
+			clockService = ClockFactory.getClockInstance(configLoader.getClockType(), this.configLoader.getNodeList(), this.localName);
+			System.out.println(configLoader.getClockType());
+		}
+		
 		/* create server socket for listening*/
 		if (this.nodeMap.containsKey(this.localName)) {
 			this.createServerSocket(this.nodeMap.get(this.localName).getPort());
@@ -55,10 +60,7 @@ public class MessagePasser {
 		
 		/* create the thread responsible for sending messages */
 		this.createSendingThread();
-		if (configLoader.getClockType() != null) {
-			clockService = ClockFactory.getClockInstance(configLoader.getClockType(), this.configLoader.getNodeList(), this.localName);
-			System.out.println(configLoader.getClockType());
-		}
+		
 	}
 	private void createClientSocket() throws IOException {
 		for (String name : this.nodeMap.keySet()) {
@@ -100,10 +102,7 @@ public class MessagePasser {
 				while (true) {
 					Message message = bufferManager.takeFromOutgoingBuffer(socketMap);
 					if (message != null) {
-						if (clockService != null && message instanceof TimeStampedMessage) {
-							TimeStamp ts = clockService.getTime();
-							((TimeStampedMessage)message).setTimestamp(ts);
-						}
+						
 						Socket socket = socketMap.get(message.getDest());
 						
 						try {
@@ -129,6 +128,10 @@ public class MessagePasser {
 		
 		message.setSource(this.localName);
 		message.setSeqNum(seqNumCounter++);
+		if (clockService != null && message instanceof TimeStampedMessage) {
+			TimeStamp ts = clockService.getTime();
+			((TimeStampedMessage)message).setTimestamp(ts);
+		}
 		
 		Rule matchRule = ruleManager.matchSendRule(message);
 		System.out.println("matchRule = "+matchRule);

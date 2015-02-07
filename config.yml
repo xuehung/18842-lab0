@@ -6,16 +6,16 @@
 # These names will be used for src and dest addresses for the Message
 # The local node’s name is included in this list
 
-clock: logical # logical or vector
+clock: vector # logical or vector
 
 # The logger's name must be logger
 configuration :
   - name : alice
-    ip : 127.0.0.1
+    ip : 128.237.185.125
     port : 12344 # This is the incoming port on which MP will listen
                  # May be changed for further communication as usual
   - name : bob
-    ip : 127.0.0.1
+    ip : 128.237.212.117 
     port : 14255
   - name : charlie
     ip : 127.0.0.1
@@ -24,7 +24,7 @@ configuration :
     ip : 127.0.0.1
     port : 1987
   - name : logger
-    ip : 127.0.0.1
+    ip : 128.237.185.125
     port : 1989
 
 sendRules :

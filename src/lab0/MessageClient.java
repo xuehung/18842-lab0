@@ -6,9 +6,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Map;
 
+import time.clock.ClockService;
+import time.timestamp.TimeStamp;
 import datatype.Message;
 import datatype.Node;
 import datatype.Rule;
+import datatype.TimeStampedMessage;
 
 public class MessageClient implements Runnable {
 	private BufferManager bufferManager = null;
@@ -17,6 +20,7 @@ public class MessageClient implements Runnable {
 	private Node destNode = null;
 	private String localName = null;
 	private RuleManager ruleManager = null;
+	private ClockService clockService = null;
 
 	public MessageClient(Node destNode,
 			BufferManager bufferManager,
@@ -70,6 +74,10 @@ public class MessageClient implements Runnable {
 				try {
 					ois = new ObjectInputStream(socket.getInputStream());
 					Message message = (Message) ois.readObject();
+					if (message instanceof TimeStampedMessage) {
+						TimeStamp ts = clockService.getTime();
+						((TimeStampedMessage)message).setTimestamp(ts);
+					}
 					Rule matchRule = ruleManager.matchReceiveRule(message);
 
 					if (matchRule != null) {

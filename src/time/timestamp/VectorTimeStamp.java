@@ -9,6 +9,7 @@ public class VectorTimeStamp extends TimeStamp {
 	public VectorTimeStamp() {
 		
 	}
+	
 	public VectorTimeStamp(int[] vector) {
 		this.vector = Arrays.copyOf(vector, vector.length);
 	}
@@ -19,13 +20,34 @@ public class VectorTimeStamp extends TimeStamp {
 
 	@Override
 	public String toString() {
-		return null;
+		StringBuffer result = new StringBuffer();
+		for (int i = 0; i < vector.length; i++) {
+		   result.append( vector[i] );
+		}
+		String mynewstring = result.toString();
+		return mynewstring;
 	}
 	
 	@Override
 	public int compareTo(TimeStamp t) {
-		// TODO Auto-generated method stub
-		return 0;
+		int[] v1 = vector;
+		int[] v2 = (int[]) t.getTime();
+		boolean equlity = true, less = false, more = false;
+		for(int i = 0; i< this.vector.length; i++) {
+			if (v1[i] != v2[i] )	
+				equlity = false;
+			if (v1[i] < v2[i])
+				less = true;
+			else if (v1[i] > v2[i])
+				more = true;
+		}
+		if (equlity == true || (less == true && more == true)) 
+			return 0;
+		else if (less = true && more == false) 
+			return -1;
+		else 
+			return 1;
+				
 	}
 
 }

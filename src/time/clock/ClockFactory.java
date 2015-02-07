@@ -25,4 +25,8 @@ public abstract class ClockFactory {
 		}
 		return clock;
 	}
+	
+	public static ClockService getClockInstance() {
+		return clock;
+	}
 }
