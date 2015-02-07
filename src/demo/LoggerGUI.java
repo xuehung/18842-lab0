@@ -83,7 +83,6 @@ public class LoggerGUI implements Runnable {//implements ActionListener {
 		};
 		thread.start();
 		
-		
 		frame.setVisible(true);
 	}
 	
@@ -92,13 +91,25 @@ public class LoggerGUI implements Runnable {//implements ActionListener {
 	}
 	
 	private void showAllLog() {
-		try {
-			document.insertBeforeEnd(document.getElement("body"), 
-					" ");
-		} catch (BadLocationException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		output.setText(htmlINIT);
+		document = (HTMLDocument) output.getDocument();
+		TimeStampedMessage[] messageArray = pq.toArray(new TimeStampedMessage[pq.size()]);
+		for (int i = 0 ; i < messageArray.length ; i++) {
+			TimeStampedMessage currentMessage = messageArray[i];
+			try {
+				if (i >= 1 && messageArray[i - 1].compareTo(currentMessage) == 0) {
+					document.insertBeforeEnd(document.getElement("body"), "<hr>");
+				}
+				document.insertBeforeEnd(document.getElement("body"), 
+						"<p>"
+						+ currentMessage.getTimestamp().toString()+"<br>"	
+						+ currentMessage.getData()
+						+"</p>");
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

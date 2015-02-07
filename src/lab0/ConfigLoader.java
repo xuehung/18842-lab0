@@ -19,7 +19,7 @@ import datatype.Rule;
 
 public class ConfigLoader {
 	
-	public final static String logger = "logger";
+	public final static String LOGGER_NAME = "logger";
 
 	private Map<String, List<LinkedHashMap<String, Object>>> config = null;
 	private Map<String, Node> nodeMap = null;
@@ -79,10 +79,10 @@ public class ConfigLoader {
 		return this.nodeMap;
 	}
 	public List<String> getNodeList() {
-		List<String> nodeList = new ArrayList<String>(this.nodeMap.size());
-		int i=0;
-		for (String key: this.nodeMap.keySet())
-			nodeList.set(i++, key);
+		List<String> nodeList = new ArrayList<String>();
+		for (String key: this.nodeMap.keySet()) {
+			nodeList.add(key);
+		}
 		java.util.Collections.sort(nodeList);
 		return nodeList;
 	}

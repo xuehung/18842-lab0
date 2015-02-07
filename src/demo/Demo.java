@@ -31,7 +31,12 @@ public class Demo implements ActionListener {
 		String name = jtfText1.getText().trim();
 		if (this.nodeMap.containsKey(name)) {
 			try {
-				Thread thread = new Thread(new MPGUI(jfc.getSelectedFile().getPath(), name));
+				Thread thread = null;
+				if (ConfigLoader.LOGGER_NAME.equals(name)) {
+					thread = new Thread(new LoggerGUI(jfc.getSelectedFile().getPath(), name));
+				} else {
+					thread = new Thread(new MPGUI(jfc.getSelectedFile().getPath(), name));
+				}
 				thread.start();
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(frame,
@@ -89,6 +94,5 @@ public class Demo implements ActionListener {
 	public static void main(String[] argv) {
 		Demo demo = new Demo();
 		demo.go();
-		
 	}
 }

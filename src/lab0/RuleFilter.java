@@ -23,9 +23,9 @@ public class RuleFilter {
 	public boolean compareWithRule(Rule rule) {
 		if(rule.getSrc()!=null && !src.equals(rule.getSrc())) 
 				return false;
-		else if (rule.getDest()!=null && !dest.equals(rule.getDest()))
+		else if (rule.getDest()!=null && !rule.getDest().equals(dest))
 				return false;
-		else if (rule.getKind() !=null && !kind.equals(rule.getKind()))
+		else if (rule.getKind() !=null && !rule.getKind().equals(kind))
 				return false;
 		else if (rule.getSeqNum()!=null && !seqNum.equals(rule.getSeqNum()))
 				return false;

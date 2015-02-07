@@ -55,8 +55,10 @@ public class MessagePasser {
 		
 		/* create the thread responsible for sending messages */
 		this.createSendingThread();
-		
-		
+		if (configLoader.getClockType() != null) {
+			clockService = ClockFactory.getClockInstance(configLoader.getClockType(), this.configLoader.getNodeList(), this.localName);
+			System.out.println(configLoader.getClockType());
+		}
 	}
 	private void createClientSocket() throws IOException {
 		for (String name : this.nodeMap.keySet()) {
@@ -98,10 +100,15 @@ public class MessagePasser {
 				while (true) {
 					Message message = bufferManager.takeFromOutgoingBuffer(socketMap);
 					if (message != null) {
+						if (clockService != null && message instanceof TimeStampedMessage) {
+							TimeStamp ts = clockService.getTime();
+							((TimeStampedMessage)message).setTimestamp(ts);
+						}
 						Socket socket = socketMap.get(message.getDest());
+						
 						try {
 							ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-							message.setSource(localName);
+							//message.setSource(localName);
 							oos.writeObject(message);
 						} catch (IOException e) {
 							e.printStackTrace();
@@ -155,9 +162,13 @@ public class MessagePasser {
 	}
 	
 	public void logEvent(String text) {
-		if (nodeMap.containsKey(ConfigLoader.logger)) {
+		System.out.println(text);
+		if (nodeMap.containsKey(ConfigLoader.LOGGER_NAME)) {
+			System.out.println(text);
 			if (clockService != null) {
-				TimeStampedMessage message = new TimeStampedMessage(ConfigLoader.logger, null, text);
+				System.out.println(text);
+				TimeStampedMessage message = new TimeStampedMessage(ConfigLoader.LOGGER_NAME, null, text);
+				System.out.println(message);
 				this.send(message);
 			}
 		}
