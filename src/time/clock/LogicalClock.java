@@ -11,12 +11,13 @@ public class LogicalClock extends ClockService {
 		this.localName = localName;
 	}
 	
-	public TimeStamp getTime() {
+	@Override
+	public synchronized TimeStamp getTime() {
 		return new LogicalTimeStamp(counter++, localName);
 	}
 
 	@Override
-	public TimeStamp getTime(TimeStamp t) {
+	public synchronized TimeStamp getTime(TimeStamp t) {
 		return new LogicalTimeStamp(counter++, localName);
 	}
 	

@@ -6,6 +6,7 @@ import time.timestamp.TimeStamp;
 public class TimeStampedMessage extends Message implements Comparable<TimeStampedMessage> {
 
 	private TimeStamp timestamp = null;
+	private boolean requireLog = false;
 
 	public TimeStampedMessage(String dest, String kind, Object data) {
 		super(dest, kind, data);
@@ -17,6 +18,14 @@ public class TimeStampedMessage extends Message implements Comparable<TimeStampe
 
 	public void setTimestamp(TimeStamp timestamp) {
 		this.timestamp = timestamp;
+	}
+	
+	public boolean isRequireLog() {
+		return requireLog;
+	}
+
+	public void setRequireLog(boolean requireLog) {
+		this.requireLog = requireLog;
 	}
 
 	@Override

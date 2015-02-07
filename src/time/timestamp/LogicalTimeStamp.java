@@ -1,6 +1,7 @@
 package time.timestamp;
 
 public class LogicalTimeStamp extends TimeStamp {
+	private static final long serialVersionUID = 1L;
 	private int time;
 	
 	public LogicalTimeStamp(int counter, String localName) {

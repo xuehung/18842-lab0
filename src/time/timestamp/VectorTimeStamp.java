@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public class VectorTimeStamp extends TimeStamp {
 	
+	private static final long serialVersionUID = 1L;
 	int[] vector = null;
 	
 	public VectorTimeStamp() {

@@ -22,17 +22,21 @@ public class MessageClient implements Runnable {
 	private String localName = null;
 	private RuleManager ruleManager = null;
 	private ClockService clockService = null;
+	private MessagePasser mp = null;
 
-	public MessageClient(Node destNode,
+	public MessageClient(MessagePasser mp,
+			Node destNode,
 			BufferManager bufferManager,
 			Map<String, Socket> socketMap, String localName,
 			RuleManager ruleManager) {
+		this.mp = mp;
 		this.bufferManager = bufferManager;
 		this.socketMap = socketMap;
 		this.destNode = destNode;
 		this.localName = localName;
 		this.socket = this.socketMap.get(destNode.getName());
 		this.ruleManager = ruleManager;
+		this.clockService = ClockFactory.getClockInstance();
 	}
 
 	@Override
@@ -75,10 +79,12 @@ public class MessageClient implements Runnable {
 				try {
 					ois = new ObjectInputStream(socket.getInputStream());
 					Message message = (Message) ois.readObject();
-					if (message instanceof TimeStampedMessage) {
-						clockService = ClockFactory.getClockInstance();
+					if (clockService != null && message instanceof TimeStampedMessage) {
 						TimeStamp ts = clockService.getTime(((TimeStampedMessage) message).getTimestamp());
-						((TimeStampedMessage)message).setTimestamp(ts);
+						if (((TimeStampedMessage) message).isRequireLog()) {
+							mp.logEvent(ts, String.format("%s received a message from %s", 
+									message.getDest(), message.getSrc()));
+						}
 					}
 					Rule matchRule = ruleManager.matchReceiveRule(message);
 

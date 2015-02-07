@@ -7,10 +7,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+
 import time.clock.ClockFactory;
 import time.clock.ClockService;
 import time.clock.ClockType;
 import time.timestamp.TimeStamp;
+import datatype.LogEvent;
 import datatype.Message;
 import datatype.Node;
 import datatype.Rule;
@@ -66,7 +68,7 @@ public class MessagePasser {
 		for (String name : this.nodeMap.keySet()) {
 			if (name.compareTo(this.localName) > 0) {				
 				Node destNode = this.nodeMap.get(name);
-				Thread client = new Thread(new MessageClient(destNode, bufferManager, socketMap, localName, ruleManager));
+				Thread client = new Thread(new MessageClient(this, destNode, bufferManager, socketMap, localName, ruleManager));
 				client.start();
 			}
 		}
@@ -89,7 +91,7 @@ public class MessagePasser {
 	 */
 	private void createServerSocket(int port) throws IOException {
 		this.listener = new ServerSocket(port);
-		Thread serverThread = new Thread(new MessageServer(this.listener,
+		Thread serverThread = new Thread(new MessageServer(this, this.listener,
 				bufferManager, this.socketMap, this.nodeMap,
 				this.ruleManager, localName));
 		serverThread.start();
@@ -131,6 +133,10 @@ public class MessagePasser {
 		if (clockService != null && message instanceof TimeStampedMessage) {
 			TimeStamp ts = clockService.getTime();
 			((TimeStampedMessage)message).setTimestamp(ts);
+			if (((TimeStampedMessage)message).isRequireLog()) {
+				this.logEvent(ts, String.format("%s sent a message to %s", 
+						message.getSrc(), message.getDest()));
+			}
 		}
 		
 		Rule matchRule = ruleManager.matchSendRule(message);
@@ -164,18 +170,26 @@ public class MessagePasser {
 		return bufferManager.takeFromIncomingBuffer();
 	}
 	
-	public void logEvent(String text) {
-		System.out.println(text);
+	
+	public void logEvent(TimeStamp ts, String text) {
 		if (nodeMap.containsKey(ConfigLoader.LOGGER_NAME)) {
-			System.out.println(text);
 			if (clockService != null) {
-				System.out.println(text);
-				TimeStampedMessage message = new TimeStampedMessage(ConfigLoader.LOGGER_NAME, null, text);
-				System.out.println(message);
+				TimeStampedMessage message = new TimeStampedMessage(ConfigLoader.LOGGER_NAME, 
+						null, new LogEvent(ts, text));
 				this.send(message);
 			}
 		}
 	}
+	
+	public void logEvent(String text) {
+		if (nodeMap.containsKey(ConfigLoader.LOGGER_NAME)) {
+			if (clockService != null) {
+				TimeStamp ts = clockService.getTime();
+				this.logEvent(ts, text);
+			}
+		}
+	}
+	
 	
 
 	public void example() {

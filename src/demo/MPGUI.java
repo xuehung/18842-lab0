@@ -121,10 +121,11 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		        					System.out.println(kind);
 		        					System.out.println(text);
 		        					TimeStampedMessage message = new TimeStampedMessage(dest, kind, text);
-		        					mp.send(message);
 		        					if (needLog) {
-		        						mp.logEvent(String.format("%s sent to %s", localName, dest));
+		        						message.setRequireLog(true);
 		        					}
+		        					mp.send(message);
+		        					
 		        				}
 		        			} else if ("log".equals(cmdType)) {
 		        				if (tokens.length > 1) {

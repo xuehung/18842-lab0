@@ -1,7 +1,6 @@
 package time.clock;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import time.timestamp.TimeStamp;
@@ -20,14 +19,14 @@ public class VectorClock extends ClockService {
 	}
 
 	@Override
-	public TimeStamp getTime() {
+	public synchronized TimeStamp getTime() {
 		VectorTimeStamp ts = new VectorTimeStamp(vector);
 		vector[localPos]++;
 		return ts;
 	}
 
 	@Override
-	public TimeStamp getTime(TimeStamp t) {
+	public synchronized TimeStamp getTime(TimeStamp t) {
 		System.out.println("localPos"+localPos);
 		if (t instanceof VectorTimeStamp) {
 			int[] outVector = ((VectorTimeStamp)t).getTime();
