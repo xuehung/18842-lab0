@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import datatype.Message;
+
 public class BufferManager {
 	final private int BUFFER_LEN = 1000;
 	private LinkedBlockingQueue<Message> incomingBuffer = null;

@@ -5,17 +5,17 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import time.ClockFactory;
-import time.ClockService;
-import time.ClockType;
-import time.TimeStamp;
+import time.clock.ClockFactory;
+import time.clock.ClockService;
+import time.clock.ClockType;
+import time.timestamp.TimeStamp;
+import datatype.Message;
 import datatype.Node;
 import datatype.Rule;
+import datatype.TimeStampedMessage;
 
 public class MessagePasser {
 		
@@ -29,6 +29,7 @@ public class MessagePasser {
 	private ConfigLoader configLoader = null;
 	
 	private ServerSocket listener = null;
+	private ClockService clockService = null;
 	private int seqNumCounter = 0;
 
 	public MessagePasser(String configFilename, String localName) throws IOException {
@@ -56,9 +57,9 @@ public class MessagePasser {
 		/* create the thread responsible for sending messages */
 		this.createSendingThread();
 		
+		
 	}
 	private void createClientSocket() throws IOException {
-		
 		for (String name : this.nodeMap.keySet()) {
 			if (name.compareTo(this.localName) > 0) {				
 				Node destNode = this.nodeMap.get(name);
@@ -70,7 +71,7 @@ public class MessagePasser {
 	}
 	private void loadConfig() throws FileNotFoundException {
 		this.configLoader = new ConfigLoader(this.configFilename);
-		
+		configLoader.getClockType();
 	    /* configuration */
 		this.nodeMap = configLoader.getNodeMap();
 		this.ruleManager = new RuleManager(configLoader);
@@ -116,7 +117,7 @@ public class MessagePasser {
 
 	public void send(Message message) {
 		System.out.println("send is called");
-		if (message == null) {
+		if (message == null || !this.nodeMap.containsKey(message.getDest())) {
 			return;
 		}
 		
@@ -152,6 +153,15 @@ public class MessagePasser {
 	 */
 	public Message receive() {
 		return bufferManager.takeFromIncomingBuffer();
+	}
+	
+	public void logEvent(String text) {
+		if (nodeMap.containsKey(ConfigLoader.logger)) {
+			if (clockService != null) {
+				TimeStampedMessage message = new TimeStampedMessage(ConfigLoader.logger, null, text);
+				this.send(message);
+			}
+		}
 	}
 	
 

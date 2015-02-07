@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
 
+import datatype.Message;
 import datatype.Node;
 
 public class MessageServer implements Runnable {

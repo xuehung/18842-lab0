@@ -1,6 +1,6 @@
-package lab0;
+package datatype;
 
-import time.TimeStamp;
+import time.timestamp.TimeStamp;
 
 @SuppressWarnings("serial")
 public class TimeStampedMessage extends Message {
