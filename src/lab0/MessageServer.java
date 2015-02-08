@@ -57,7 +57,7 @@ public class MessageServer implements Runnable {
 					System.err.println("The kind and data of the first message should be null");
 					continue;
 				}
-				
+				System.out.println("connection from "+ src +" has been established");
 				Node node = this.nodeMap.get(src);
 				socketMap.put(src, socket);
 				Thread client = new Thread(new MessageClient(mp, node, bufferManager, socketMap, localName, ruleManager));

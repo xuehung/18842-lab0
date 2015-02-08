@@ -83,7 +83,7 @@ public class MPGUI implements Runnable {//implements ActionListener {
 					try {
 						document.insertBeforeEnd(document.getElement("body"), 
 								"<div align='right'>"
-								+ "<p>"+cmd+":<br>");
+								+ "<p>"+cmd+"<br>");
 					} catch (BadLocationException e1) {
 						e1.printStackTrace();
 					} catch (IOException e1) {
@@ -132,6 +132,17 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		        					String logText = tokens[1];
 		        					mp.logEvent(logText);
 		        				}
+		        			} else if ("time".equals(cmdType)) {
+		        				String time = mp.showTime();
+		        				try {
+		    						document.insertBeforeEnd(document.getElement("body"), 
+		    								"<div align='right'>"
+		    								+ "<p>"+time+"<br>");
+		    					} catch (BadLocationException e1) {
+		    						e1.printStackTrace();
+		    					} catch (IOException e1) {
+		    						e1.printStackTrace();
+		    					}
 		        			}
 		        		}		
 		        }

@@ -20,5 +20,10 @@ public class LogicalClock extends ClockService {
 	public synchronized TimeStamp getTime(TimeStamp t) {
 		return new LogicalTimeStamp(counter++, localName);
 	}
+
+	@Override
+	public String showTime() {
+		return counter + "";
+	}
 	
 }

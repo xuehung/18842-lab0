@@ -94,4 +94,10 @@ public class VectorClock extends ClockService {
 //		
 	}
 
+	@Override
+	public String showTime() {
+		VectorTimeStamp ts = new VectorTimeStamp(vector);
+		return ts.toString();
+	}
+
 }

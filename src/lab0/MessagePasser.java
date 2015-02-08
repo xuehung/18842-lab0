@@ -123,7 +123,6 @@ public class MessagePasser {
 	}
 
 	public void send(Message message) {
-		System.out.println("send is called");
 		if (message == null || !this.nodeMap.containsKey(message.getDest())) {
 			return;
 		}
@@ -188,6 +187,10 @@ public class MessagePasser {
 				this.logEvent(ts, text);
 			}
 		}
+	}
+	
+	public String showTime() {
+		return clockService.showTime();
 	}
 	
 	
