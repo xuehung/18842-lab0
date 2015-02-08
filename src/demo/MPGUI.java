@@ -129,8 +129,15 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		        				}
 		        			} else if ("log".equals(cmdType)) {
 		        				if (tokens.length > 1) {
-		        					String logText = tokens[1];
-		        					mp.logEvent(logText);
+		        					String logText = null;
+		        					if ("-l".equals(tokens[1]) && tokens.length >= 3) {
+		        						logText = tokens[2];
+		        						mp.logEvent(logText, true);
+		        					} else {
+		        						logText = tokens[1];
+		        						mp.logEvent(logText, false);
+		        					}
+		        					
 		        				}
 		        			} else if ("time".equals(cmdType)) {
 		        				String time = mp.showTime();

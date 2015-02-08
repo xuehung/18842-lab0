@@ -180,11 +180,13 @@ public class MessagePasser {
 		}
 	}
 	
-	public void logEvent(String text) {
+	public void logEvent(String text, boolean toLogger) {
 		if (nodeMap.containsKey(ConfigLoader.LOGGER_NAME)) {
 			if (clockService != null) {
 				TimeStamp ts = clockService.getTime();
-				this.logEvent(ts, text);
+				if (toLogger) {
+					this.logEvent(ts, text);
+				}
 			}
 		}
 	}
