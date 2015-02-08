@@ -67,7 +67,6 @@ public class MessageClient implements Runnable {
 							e.printStackTrace();
 						}
 					} catch (Exception e) {
-						System.out.println(destNode.getName());
 						continue;
 					}
 					socketMap.put(destNode.getName(), socket);

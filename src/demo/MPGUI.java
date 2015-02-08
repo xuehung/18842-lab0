@@ -117,9 +117,6 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		        					for (text = tokens[textPos++]; textPos < tokens.length ; textPos++) {
 		        						text += (" " + tokens[textPos]);
 		        					}
-		        					System.out.println(dest);
-		        					System.out.println(kind);
-		        					System.out.println(text);
 		        					TimeStampedMessage message = new TimeStampedMessage(dest, kind, text);
 		        					if (needLog) {
 		        						message.setRequireLog(true);
@@ -130,13 +127,16 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		        			} else if ("log".equals(cmdType)) {
 		        				if (tokens.length > 1) {
 		        					String logText = null;
+		        					int textPos = 1;
+		        					boolean toLogger = false;
 		        					if ("-l".equals(tokens[1]) && tokens.length >= 3) {
-		        						logText = tokens[2];
-		        						mp.logEvent(logText, true);
-		        					} else {
-		        						logText = tokens[1];
-		        						mp.logEvent(logText, false);
+		        						textPos = 2;
+		        						toLogger = true;
 		        					}
+		        					for (logText = tokens[textPos++]; textPos < tokens.length ; textPos++) {
+		        						logText += (" " + tokens[textPos]);
+		        					}
+		        					mp.logEvent(logText, toLogger);
 		        					
 		        				}
 		        			} else if ("time".equals(cmdType)) {

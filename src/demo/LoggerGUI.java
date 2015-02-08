@@ -167,7 +167,9 @@ public class LoggerGUI implements Runnable {//implements ActionListener {
 		try {
 			document.insertBeforeEnd(document.getElement("body"), 
 					"<p>"+str+"</p>");
-		} catch (BadLocationException | IOException e) {
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
