@@ -20,8 +20,8 @@ public class VectorClock extends ClockService {
 
 	@Override
 	public synchronized TimeStamp getTime() {
-		VectorTimeStamp ts = new VectorTimeStamp(vector);
 		vector[localPos]++;
+		VectorTimeStamp ts = new VectorTimeStamp(vector);
 		return ts;
 	}
 
