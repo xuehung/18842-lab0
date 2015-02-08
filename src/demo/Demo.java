@@ -38,6 +38,7 @@ public class Demo implements ActionListener {
 					thread = new Thread(new MPGUI(jfc.getSelectedFile().getPath(), name));
 				}
 				thread.start();
+				frame.setVisible(false);
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(frame,
 					    "cannot find configuration: "+ jfc.getSelectedFile().getPath(),

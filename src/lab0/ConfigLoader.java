@@ -103,34 +103,37 @@ public class ConfigLoader {
 	private void loadRule(List<Rule> ruleList, String fieldName) {
 		System.out.printf("\nloading rules: %s\n", fieldName);
 		List<LinkedHashMap<String, Object>> sendRuleList = this.config.get(fieldName);
-	    for (LinkedHashMap<String, Object> sendRule : sendRuleList) {
-	    		String actionStr = (String)sendRule.get("action");
-	    		String src = (String)sendRule.get("src");
-	    		String dest = (String)sendRule.get("dest");
-	    		String kind = (String)sendRule.get("kind");
-	    		Integer seqNum = (Integer)sendRule.get("seqNum");
-	    		Boolean duplicate = (Boolean)sendRule.get("duplicate");
-	    		Action action = null;
-	    		for (Action ac : Action.values()) {
-	    			if (ac.toString().equals(actionStr)) {
-	    				action = ac;
-	    			}
-	    		}
-	    		if (action != null) {
-	    			Rule rule = new Rule(action);
-	    			ruleList.add(rule);
-	    			rule.setSrc(src);
-	    			rule.setDest(dest);
-	    			rule.setKind(kind);
-	    			rule.setSeqNum(seqNum);
-	    			rule.setDuplicate(duplicate);
-	    			System.out.printf("rule (%s: %s -> %s, %s, %s, %s)\n", 
-	    					rule.getAction(), rule.getSrc(), rule.getDest(), 
-	    					rule.getKind(), rule.getSeqNum(), rule.getDuplicate());
-	    		} else {
-	    			System.err.println("action field is missing or illegal");
-	    		}
-	    }
+		if (sendRuleList != null) {
+			for (LinkedHashMap<String, Object> sendRule : sendRuleList) {
+				String actionStr = (String) sendRule.get("action");
+				String src = (String) sendRule.get("src");
+				String dest = (String) sendRule.get("dest");
+				String kind = (String) sendRule.get("kind");
+				Integer seqNum = (Integer) sendRule.get("seqNum");
+				Boolean duplicate = (Boolean) sendRule.get("duplicate");
+				Action action = null;
+				for (Action ac : Action.values()) {
+					if (ac.toString().equals(actionStr)) {
+						action = ac;
+					}
+				}
+				if (action != null) {
+					Rule rule = new Rule(action);
+					ruleList.add(rule);
+					rule.setSrc(src);
+					rule.setDest(dest);
+					rule.setKind(kind);
+					rule.setSeqNum(seqNum);
+					rule.setDuplicate(duplicate);
+					System.out.printf("rule (%s: %s -> %s, %s, %s, %s)\n",
+							rule.getAction(), rule.getSrc(), rule.getDest(),
+							rule.getKind(), rule.getSeqNum(),
+							rule.getDuplicate());
+				} else {
+					System.err.println("action field is missing or illegal");
+				}
+			}
+		}
 	    System.out.printf("%d rules are loaded\n", ruleList.size());
 	}
 	

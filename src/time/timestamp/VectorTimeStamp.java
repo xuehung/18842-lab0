@@ -22,11 +22,16 @@ public class VectorTimeStamp extends TimeStamp {
 	@Override
 	public String toString() {
 		StringBuffer result = new StringBuffer();
-		for (int i = 0; i < vector.length; i++) {
-		   result.append( vector[i] );
+		if (vector.length >= 1) {
+			result.append(vector[0]);
 		}
-		String mynewstring = result.toString();
-		return mynewstring;
+		for (int i = 1; i < vector.length; i++) {
+			result.append(", ");
+		    result.append(vector[i]);
+		}
+		result.insert(0, "(");
+		result.append(")");
+		return result.toString();
 	}
 	
 	@Override

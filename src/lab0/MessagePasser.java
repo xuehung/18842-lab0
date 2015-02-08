@@ -132,9 +132,11 @@ public class MessagePasser {
 		if (clockService != null && message instanceof TimeStampedMessage) {
 			TimeStamp ts = clockService.getTime();
 			((TimeStampedMessage)message).setTimestamp(ts);
+			String logtext = String.format("%s sent a message to %s", 
+					message.getSrc(), message.getDest());
+			System.err.println(logtext);
 			if (((TimeStampedMessage)message).isRequireLog()) {
-				this.logEvent(ts, String.format("%s sent a message to %s", 
-						message.getSrc(), message.getDest()));
+				this.logEvent(ts, logtext);
 			}
 		}
 		

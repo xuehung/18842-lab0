@@ -67,6 +67,7 @@ public class MessageClient implements Runnable {
 							e.printStackTrace();
 						}
 					} catch (Exception e) {
+						System.out.println(destNode.getName());
 						continue;
 					}
 					socketMap.put(destNode.getName(), socket);
@@ -81,9 +82,11 @@ public class MessageClient implements Runnable {
 					Message message = (Message) ois.readObject();
 					if (clockService != null && message instanceof TimeStampedMessage) {
 						TimeStamp ts = clockService.getTime(((TimeStampedMessage) message).getTimestamp());
+						String logtext = String.format("%s received a message from %s", 
+								message.getDest(), message.getSrc());
+						System.err.println(logtext);
 						if (((TimeStampedMessage) message).isRequireLog()) {
-							mp.logEvent(ts, String.format("%s received a message from %s", 
-									message.getDest(), message.getSrc()));
+							mp.logEvent(ts, logtext);
 						}
 					}
 					Rule matchRule = ruleManager.matchReceiveRule(message);
