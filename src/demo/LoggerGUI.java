@@ -13,6 +13,7 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 
+import time.timestamp.VectorTimeStamp;
 import datatype.LogEvent;
 import datatype.Message;
 import datatype.Node;
@@ -90,13 +91,51 @@ public class LoggerGUI implements Runnable {//implements ActionListener {
 	private void addNewLog(TimeStampedMessage message) {
 		pq.add(message);
 	}
-	
+	private void showSrcDes(TimeStampedMessage[] messageArray) {
+		VectorTimeStamp[] list = new VectorTimeStamp[messageArray.length];
+		ArrayList<Object> dataList = new ArrayList<Object>();
+		for (int i = 0 ; i < messageArray.length ; i++) {
+			TimeStampedMessage currentMessage = messageArray[i];
+			LogEvent e = (LogEvent)currentMessage.getData();
+			VectorTimeStamp inTimeStamp=(VectorTimeStamp) e.getTimestamp();
+			String inText=e.getText();
+			list[i]=inTimeStamp;
+			dataList.add(inText);
+		}
+		display("Concurrent process: ");
+		for(int j=0;j<list.length-1;j++) {
+			for(int i=j+1; i<list.length; i++) {
+				if (list[j].compareTo(list[i]) == 0) {
+					display(list[j]+"["+dataList.get(j)+"]"+"||"+list[i].toString()+"["+dataList.get(i)+"]");
+				}
+			}
+		}
+		display("Sequential process: ");
+		for(int j=0;j<list.length-1;j++) {
+			for(int i=j+1; i<list.length; i++) {
+				if (list[j].compareTo(list[i]) < 0) {
+					display(list[j].toString()+"["+dataList.get(j)+"]"+"->"+list[i].toString()+"["+dataList.get(i)+"]");
+				}
+			}
+		}
+		for(int j=0;j<list.length-1;j++) {
+			for(int i=j+1; i<list.length; i++) {
+				if (list[j].compareTo(list[i]) > 0) {
+					display(list[i].toString()+"["+dataList.get(i)+"]"+"||"+list[j].toString()+"["+dataList.get(j)+"]");
+
+				}
+			}
+		}
+	}
 	private void showAllLog() {
 		output.setText(htmlINIT);
 		document = (HTMLDocument) output.getDocument();
 		TimeStampedMessage[] messageArray = pq.toArray(new TimeStampedMessage[pq.size()]);
+		showSrcDes(messageArray);
+		/*
 		for (int i = 0 ; i < messageArray.length ; i++) {
 			TimeStampedMessage currentMessage = messageArray[i];
+			list.add((VectorTimeStamp) currentMessage.getTimestamp());
 			try {
 				if (i >= 1 && messageArray[i - 1].compareTo(currentMessage) == 0) {
 					document.insertBeforeEnd(document.getElement("body"), "<hr>");
@@ -109,11 +148,27 @@ public class LoggerGUI implements Runnable {//implements ActionListener {
 							+ e.getText()
 							+"</p>");
 				}
+				
 			} catch (BadLocationException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+		*/
+		
+	}
+	
+	private void display(String str) {
+		if (str == null) {
+			return;
+		}
+		str.replaceAll("\\n", "<br>");
+		try {
+			document.insertBeforeEnd(document.getElement("body"), 
+					"<p>"+str+"</p>");
+		} catch (BadLocationException | IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
