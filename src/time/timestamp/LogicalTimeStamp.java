@@ -32,8 +32,7 @@ public class LogicalTimeStamp extends TimeStamp {
 
 	@Override
 	public Object getTime() {
-		// TODO Auto-generated method stub
-		return null;
+		return time;
 	}
 
 	

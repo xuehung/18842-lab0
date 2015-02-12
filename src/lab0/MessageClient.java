@@ -81,8 +81,8 @@ public class MessageClient implements Runnable {
 					Message message = (Message) ois.readObject();
 					if (clockService != null && message instanceof TimeStampedMessage) {
 						TimeStamp ts = clockService.getTime(((TimeStampedMessage) message).getTimestamp());
-						String logtext = String.format("%s received a message from %s", 
-								message.getDest(), message.getSrc());
+						String logtext = String.format("%s received a message from %s at time %s", 
+								message.getDest(), message.getSrc(), ((TimeStampedMessage) message).getTimestamp());
 						System.err.println(logtext);
 						if (((TimeStampedMessage) message).isRequireLog()) {
 							mp.logEvent(ts, logtext);

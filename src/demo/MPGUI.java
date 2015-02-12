@@ -178,6 +178,7 @@ public class MPGUI implements Runnable {//implements ActionListener {
 									"<div align='left'>"
 									+ String.format("<p>%s:(%s/%d)<br>",m.getSrc(), m.getKind(), m.getSeqNum())
 									+m.getData()+"</p></div><hr>");
+							
 						} catch (BadLocationException e) {
 							e.printStackTrace();
 						} catch (IOException e) {

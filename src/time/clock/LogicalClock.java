@@ -13,12 +13,17 @@ public class LogicalClock extends ClockService {
 	
 	@Override
 	public synchronized TimeStamp getTime() {
-		return new LogicalTimeStamp(counter++, localName);
+		return new LogicalTimeStamp(++counter, localName);
 	}
 
 	@Override
 	public synchronized TimeStamp getTime(TimeStamp t) {
-		return new LogicalTimeStamp(counter++, localName);
+		if (t instanceof LogicalTimeStamp) {
+			LogicalTimeStamp lts = (LogicalTimeStamp)(t);
+			counter = Math.max(counter, (Integer)lts.getTime());
+			return new LogicalTimeStamp(++counter, localName);
+		}
+		return null;
 	}
 
 	@Override
