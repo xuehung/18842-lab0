@@ -108,7 +108,7 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		        					if ("-l".equals(tokens[1]) && tokens.length >= 5) {
 		        						dest = tokens[2];
 		        						kind = tokens[3];
-		        						needLog = true;
+		        						needLog = false;
 		        						textPos = 4;
 		        					} else {
 		        						dest = tokens[1];
@@ -132,7 +132,7 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		        					boolean toLogger = false;
 		        					if ("-l".equals(tokens[1]) && tokens.length >= 3) {
 		        						textPos = 2;
-		        						toLogger = true;
+		        						toLogger = false;
 		        					}
 		        					for (logText = tokens[textPos++]; textPos < tokens.length ; textPos++) {
 		        						logText += (" " + tokens[textPos]);

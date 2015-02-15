@@ -15,7 +15,9 @@ public class LogicalClock extends ClockService {
 	public synchronized TimeStamp getTime() {
 		return new LogicalTimeStamp(++counter, localName);
 	}
-
+	public synchronized TimeStamp getNonIncreTime() {
+		return null;
+	}
 	@Override
 	public synchronized TimeStamp getTime(TimeStamp t) {
 		if (t instanceof LogicalTimeStamp) {
