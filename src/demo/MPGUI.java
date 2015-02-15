@@ -121,7 +121,8 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		        					if (needLog) {
 		        						message.setRequireLog(true);
 		        					}
-		        					mp.send(message);
+		        					//mp.send(message);
+		        					mp.multicast(dest, message);
 		        					
 		        				}
 		        			} else if ("log".equals(cmdType)) {

@@ -28,7 +28,7 @@ public class ConfigLoader {
 	private File configFile = null;
 	Object yamlObject = null;
 	private long lastModified = 0;
-	
+	private Map<String, Groups> groupMap = null;
 	@SuppressWarnings("unchecked")
 	public ConfigLoader(String filename) throws FileNotFoundException {
 		this.configFile = new File(filename);
@@ -64,7 +64,20 @@ public class ConfigLoader {
 		System.out.println("Configuration reloaded!");
 		return true;
 	}
-	
+	public Map<String, Groups> getGroups() {
+		
+		this.groupMap = new HashMap<String, Groups>();
+		
+		List<LinkedHashMap<String, Object>> groupInfo = this.config.get("groups");
+		System.out.println("Coming into getGroups");
+		for (LinkedHashMap<String, Object> group : groupInfo) {
+			String name = (String) group.get("name");
+			ArrayList<String> members =((ArrayList<String>)(group.get("members")));
+			Groups theGroup = new Groups(members);
+			groupMap.put(name, theGroup);
+			}
+		return this.groupMap;
+	}
 	public Map<String, Node> getNodeMap() {
 		this.nodeMap = new HashMap<String, Node>();
 		
@@ -100,6 +113,9 @@ public class ConfigLoader {
 		return this.receiveRules;
 	}
 	
+//	private void loadGroups(List<Node> nodes, String fieldName) {
+//		List<List<Node>> groups = this.groups.get(fieldName);
+//	}
 	private void loadRule(List<Rule> ruleList, String fieldName) {
 		System.out.printf("\nloading rules: %s\n", fieldName);
 		List<LinkedHashMap<String, Object>> sendRuleList = this.config.get(fieldName);

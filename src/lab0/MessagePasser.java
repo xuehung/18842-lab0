@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import time.clock.ClockFactory;
@@ -32,7 +34,7 @@ public class MessagePasser {
 	private ServerSocket listener = null;
 	private ClockService clockService = null;
 	private int seqNumCounter = 0;
-
+	private Map<String, Groups> groupMap = null;
 	public MessagePasser(String configFilename, String localName) throws IOException {
 		
 		System.out.printf("##### MessagePasser(name: %s) is initialized #####\n\n", localName);
@@ -43,7 +45,7 @@ public class MessagePasser {
 		this.nodeMap = new HashMap<String, Node>();
 		this.socketMap = new HashMap<String, Socket>();
 		this.bufferManager = new BufferManager();
-		
+		this.groupMap = new HashMap<String, Groups>();
 		/* parse configuration */
 		this.loadConfig();
 		
@@ -79,6 +81,7 @@ public class MessagePasser {
 		configLoader.getClockType();
 	    /* configuration */
 		this.nodeMap = configLoader.getNodeMap();
+		this.groupMap = configLoader.getGroups();
 		this.ruleManager = new RuleManager(configLoader);
 	  
 	}
@@ -171,7 +174,6 @@ public class MessagePasser {
 		return bufferManager.takeFromIncomingBuffer();
 	}
 	
-	
 	public void logEvent(TimeStamp ts, String text) {
 		if (nodeMap.containsKey(ConfigLoader.LOGGER_NAME)) {
 			if (clockService != null) {
@@ -195,6 +197,25 @@ public class MessagePasser {
 	
 	public String showTime() {
 		return clockService.showTime();
+	}
+	
+	
+	public void multicast(String groupName, Message message) {
+		String kind = message.getKind();
+		Object data = message.getData();
+		
+		if(!groupMap.keySet().contains(groupName)) {
+			System.out.println("if");
+				return;
+		}
+		else {
+
+			for (String dest : groupMap.get(groupName).getMembers()) {
+				
+				Message msg = new TimeStampedMessage(dest, kind, data);
+				this.send(msg);
+			}
+		} 
 	}
 	
 	
