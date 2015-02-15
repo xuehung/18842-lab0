@@ -24,7 +24,7 @@ configuration :
     ip : 127.0.0.1
     port : 1987
   - name : logger
-    ip : 128.237.187.155
+    ip : 127.0.0.1
     port : 1989
 
 groups:

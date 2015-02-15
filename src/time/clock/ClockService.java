@@ -10,6 +10,7 @@ public abstract class ClockService {
 	 * when a message is received
 	 */
 	public abstract TimeStamp getTime(TimeStamp t);
+	public abstract TimeStamp getNonIncreTime();
 	public abstract String showTime();
 		
 }

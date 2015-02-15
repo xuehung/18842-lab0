@@ -14,6 +14,7 @@ import time.clock.ClockFactory;
 import time.clock.ClockService;
 import time.clock.ClockType;
 import time.timestamp.TimeStamp;
+import time.timestamp.VectorTimeStamp;
 import datatype.LogEvent;
 import datatype.Message;
 import datatype.Node;
@@ -187,7 +188,7 @@ public class MessagePasser {
 	public void logEvent(String text, boolean toLogger) {
 		if (nodeMap.containsKey(ConfigLoader.LOGGER_NAME)) {
 			if (clockService != null) {
-				TimeStamp ts = clockService.getTime();
+				TimeStamp ts = clockService.getNonIncreTime();
 				if (toLogger) {
 					this.logEvent(ts, text);
 				}

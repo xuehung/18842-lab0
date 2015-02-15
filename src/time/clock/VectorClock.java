@@ -24,7 +24,10 @@ public class VectorClock extends ClockService {
 		VectorTimeStamp ts = new VectorTimeStamp(vector);
 		return ts;
 	}
-
+	public synchronized TimeStamp getNonIncreTime() {
+		VectorTimeStamp ts = new VectorTimeStamp(vector);
+		return ts;
+	}
 	@Override
 	public synchronized TimeStamp getTime(TimeStamp t) {
 		System.out.println("localPos"+localPos);
