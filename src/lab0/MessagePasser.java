@@ -68,7 +68,7 @@ public class MessagePasser {
 	}
 	private void createClientSocket() throws IOException {
 		for (String name : this.nodeMap.keySet()) {
-			if (name.compareTo(this.localName) > 0) {				
+			if (name.compareTo(this.localName) >= 0) {				
 				Node destNode = this.nodeMap.get(name);
 				Thread client = new Thread(new MessageClient(this, destNode, bufferManager, socketMap, localName, ruleManager));
 				client.start();

@@ -49,7 +49,7 @@ public class MessageServer implements Runnable {
 					System.err.println("cannot recognize src: "+src);
 					continue;
 				}
-				if (socketMap.containsKey(src)) {
+				if (socketMap.containsKey(src) && !src.equals(localName)) {
 					System.err.println("socket already exists: "+src);
 					continue;
 				}
@@ -60,8 +60,10 @@ public class MessageServer implements Runnable {
 				System.out.println("connection from "+ src +" has been established");
 				Node node = this.nodeMap.get(src);
 				socketMap.put(src, socket);
-				Thread client = new Thread(new MessageClient(mp, node, bufferManager, socketMap, localName, ruleManager));
-				client.start();
+				if (!src.equals(localName)) {
+					Thread client = new Thread(new MessageClient(mp, node, bufferManager, socketMap, localName, ruleManager));
+					client.start();
+				}
 				
 			} catch (IOException e) {
 				e.printStackTrace();

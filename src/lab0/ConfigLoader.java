@@ -99,6 +99,16 @@ public class ConfigLoader {
 		java.util.Collections.sort(nodeList);
 		return nodeList;
 	}
+	
+	public List<String> getGroupList() {
+		List<String> groupList = new ArrayList<String>();
+		for (String key: this.groupMap.keySet()) {
+			groupList.add(key);
+		}
+		java.util.Collections.sort(groupList);
+		return groupList;
+	}
+	
 	public List<Rule> getSendRules() {
 		this.sendRules = new ArrayList<Rule>();
 		

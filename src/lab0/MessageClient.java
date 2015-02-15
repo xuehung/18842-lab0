@@ -51,7 +51,7 @@ public class MessageClient implements Runnable {
 				break;
 			}
 			/* create the socket by small name */
-			if (destNode.getName().compareTo(this.localName) > 0) {
+			if (destNode.getName().compareTo(this.localName) >= 0) {
 				while (!socketMap.containsKey(destNode.getName())) {
 					try {
 						socket = new Socket(destNode.getIp(),
@@ -69,7 +69,9 @@ public class MessageClient implements Runnable {
 					} catch (Exception e) {
 						continue;
 					}
-					socketMap.put(destNode.getName(), socket);
+					if (!socketMap.containsKey(destNode.getName())) {
+						socketMap.put(destNode.getName(), socket);
+					}
 				}
 			}
 
