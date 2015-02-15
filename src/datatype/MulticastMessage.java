@@ -1,14 +1,28 @@
 package datatype;
 
-public class MulticastMessage {
+public class MulticastMessage extends TimeStampedMessage {
+	
 	private String groupName = null;
-	private String kind = null;
-	private Object data = null;
+	private int[] vector = null;
 
 	public MulticastMessage(String groupName, String kind, Object data) {
+		super(null, kind, data);
 		this.groupName = groupName;
-		this.kind = kind; 
-		this.data = data;
 	}
-	
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public int[] getVector() {
+		return vector;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public void setVector(int[] vector) {
+		this.vector = vector;
+	}
 }
