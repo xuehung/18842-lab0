@@ -188,6 +188,7 @@ public class MessagePasser {
 	public void logEvent(String text, boolean toLogger) {
 		if (nodeMap.containsKey(ConfigLoader.LOGGER_NAME)) {
 			if (clockService != null) {
+				// TODO should increase
 				TimeStamp ts = clockService.getNonIncreTime();
 				if (toLogger) {
 					this.logEvent(ts, text);
@@ -202,6 +203,10 @@ public class MessagePasser {
 	
 	
 	public void multicast(String groupName, Message message) {
+		
+		ms.RCOMulticast(message)
+		
+		/*
 		String kind = message.getKind();
 		Object data = message.getData();
 		
@@ -217,6 +222,7 @@ public class MessagePasser {
 				this.send(msg);
 			}
 		} 
+		*/
 	}
 	
 	

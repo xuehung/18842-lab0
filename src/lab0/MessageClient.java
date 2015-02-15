@@ -101,6 +101,10 @@ public class MessageClient implements Runnable {
 						case duplicate:
 							/* duplicate field is already set in clone */
 							Message duplicateMsg = message.clone();
+							
+							add MulticastService.deliver here
+							
+							
 							bufferManager.addToIncomingBuffer(message);
 							bufferManager.addToIncomingBuffer(duplicateMsg);
 							bufferManager.clearDelayIncomingMessage();
@@ -110,8 +114,12 @@ public class MessageClient implements Runnable {
 							break;
 						}
 					} else {
-						bufferManager.addToIncomingBuffer(message);
-						bufferManager.clearDelayIncomingMessage();
+						if (message instanceof MulticastMessage) {
+							ms.BDeliver(message);
+						} else {
+							bufferManager.addToIncomingBuffer(message);
+							bufferManager.clearDelayIncomingMessage();
+						}
 					}
 
 				} catch (IOException e) {

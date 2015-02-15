@@ -5,8 +5,8 @@ public class MulticastMessage extends TimeStampedMessage {
 	private String groupName = null;
 	private int[] vector = null;
 
-	public MulticastMessage(String groupName, String kind, Object data) {
-		super(null, kind, data);
+	public MulticastMessage(String groupName, String dest, String kind, Object data) {
+		super(dest, kind, data);
 		this.groupName = groupName;
 	}
 
