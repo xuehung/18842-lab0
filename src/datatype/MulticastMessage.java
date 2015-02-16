@@ -1,9 +1,10 @@
 package datatype;
 
 public class MulticastMessage extends TimeStampedMessage {
-	
+
+	private static final long serialVersionUID = 1L;
 	private String groupName = null;
-	private int[] vector = null;
+	private Integer[] vector = null;
 
 	public MulticastMessage(String groupName, String dest, String kind, Object data) {
 		super(dest, kind, data);
@@ -14,7 +15,7 @@ public class MulticastMessage extends TimeStampedMessage {
 		return groupName;
 	}
 
-	public int[] getVector() {
+	public Integer[] getVector() {
 		return vector;
 	}
 
@@ -22,7 +23,7 @@ public class MulticastMessage extends TimeStampedMessage {
 		this.groupName = groupName;
 	}
 
-	public void setVector(int[] vector) {
+	public void setVector(Integer[] vector) {
 		this.vector = vector;
 	}
 }

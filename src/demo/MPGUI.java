@@ -16,6 +16,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 
 import datatype.Message;
+import datatype.MulticastMessage;
 import datatype.Node;
 import datatype.TimeStampedMessage;
 import lab0.ConfigLoader;
@@ -94,10 +95,9 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		        		e.consume();
 		        		
 		        		String[] tokens = cmd.split(" ");
-		        		System.out.println(tokens.length);
 		        		if (tokens.length > 0) {
 		        			String cmdType = tokens[0];
-		        			if ("send".equals(cmdType)) {
+		        			if ("send".equals(cmdType) || "mc".equals(cmdType)) {
 		        				System.out.println(cmdType);
 		        				String dest = null;
 		        				String kind = null;
@@ -117,12 +117,20 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		        					for (text = tokens[textPos++]; textPos < tokens.length ; textPos++) {
 		        						text += (" " + tokens[textPos]);
 		        					}
-		        					TimeStampedMessage message = new TimeStampedMessage(dest, kind, text);
-		        					if (needLog) {
-		        						message.setRequireLog(true);
+		        					
+		        					
+		        					if ("send".equals(cmdType)) {
+			        					TimeStampedMessage message = new TimeStampedMessage(dest, kind, text);
+			        					if (needLog) {
+			        						message.setRequireLog(true);
+			        					}
+			        					mp.send(message);
+		        					} else {
+		        						// dest is group name
+		        						MulticastMessage message = new MulticastMessage(dest, null, kind, text);
+		        						mp.multicast(message);
 		        					}
-		        					mp.send(message);
-		        					//mp.multicast(dest, message);
+		        					//
 		        					
 		        				}
 		        			} else if ("log".equals(cmdType)) {

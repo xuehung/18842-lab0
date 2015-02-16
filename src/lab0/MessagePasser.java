@@ -205,8 +205,8 @@ public class MessagePasser {
 	}
 	
 	
-	public void multicast(String groupName, Message message) {
-		ms.RCOMulticast((MulticastMessage)message);
+	public void multicast(MulticastMessage message) {
+		ms.RCOMulticast(message);
 	}
 	
 	
