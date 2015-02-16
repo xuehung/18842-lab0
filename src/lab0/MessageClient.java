@@ -125,8 +125,8 @@ public class MessageClient implements Runnable {
 							ms.BDeliver((MulticastMessage)message);
 						} else {
 							bufferManager.addToIncomingBuffer(message);
-							bufferManager.clearDelayIncomingMessage();
 						}
+						bufferManager.clearDelayIncomingMessage();
 					}
 
 				} catch (IOException e) {

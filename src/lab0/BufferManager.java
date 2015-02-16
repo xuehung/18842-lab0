@@ -8,6 +8,7 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import datatype.Message;
+import datatype.MulticastMessage;
 
 public class BufferManager {
 	final private int BUFFER_LEN = 1000;
@@ -15,12 +16,14 @@ public class BufferManager {
 	private LinkedBlockingQueue<Message> outgoingBuffer = null;
 	private Queue<Message> incomingDelayQueue = null;
 	private Queue<Message> outgoingDelayQueue = null;
+	private MulticastService ms = null;
 	
-	public BufferManager() {	
+	public BufferManager(MulticastService ms) {	
 		this.incomingBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
 		this.outgoingBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
 		this.incomingDelayQueue = new ArrayDeque<Message>();
 		this.outgoingDelayQueue = new ArrayDeque<Message>();
+		this.ms = ms;
 	}
 	
 	public void addToOutgoingBuffer(Message message) {
@@ -83,7 +86,13 @@ public class BufferManager {
 	}
 	
 	public synchronized void clearDelayIncomingMessage() {
-		incomingBuffer.addAll(incomingDelayQueue);
+		for (Message message : incomingDelayQueue) {
+			if (message instanceof MulticastMessage) {
+				ms.BDeliver((MulticastMessage)message);
+			} else {
+				incomingBuffer.add(message);
+			}
+		}
 		incomingDelayQueue.clear();
 	}
 }
