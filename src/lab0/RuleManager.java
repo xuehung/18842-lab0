@@ -19,16 +19,16 @@ public class RuleManager {
 	}
 	
 	public Rule matchSendRule(Message message) {
-		if(localName.equals(message.getDest()) && localName.equals(message.getSrc()))
-			return null;
+		//if(localName.equals(message.getDest()) && localName.equals(message.getSrc()))
+		//	return null;
 		this.checkConfigReload();
 		RuleFilter ruleFilter = new RuleFilter(message);
 		return ruleFilter.getRule(sendRules);
 	}
 	
 	public Rule matchReceiveRule(Message message) {
-		if(localName.equals(message.getDest()) && localName.equals(message.getSrc()))
-			return null;
+		//if(localName.equals(message.getDest()) && localName.equals(message.getSrc()))
+		//	return null;
 		this.checkConfigReload();
 		RuleFilter ruleFilter = new RuleFilter(message);
 		return ruleFilter.getRule(receiveRules);
