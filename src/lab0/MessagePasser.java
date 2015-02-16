@@ -150,6 +150,8 @@ public class MessagePasser {
 			}
 		}
 		
+		boolean toSelf = (localName.equals(message.getDest())) && (localName.equals(message.getSrc()));
+		
 		Rule matchRule = ruleManager.matchSendRule(message);
 		System.out.println("matchRule = "+matchRule);
 		if (matchRule != null) {
@@ -162,7 +164,9 @@ public class MessagePasser {
 				Message duplicateMsg = message.clone();
 				bufferManager.addToOutgoingBuffer(message);
 				bufferManager.addToOutgoingBuffer(duplicateMsg);
-				bufferManager.clearDelayOutgoingMessage();
+				if (toSelf) {
+					bufferManager.clearDelayOutgoingMessage();
+				}
 				break;
 			case delay:
 				bufferManager.delayOutgoingMessage(message);
@@ -170,7 +174,9 @@ public class MessagePasser {
 			}
 		} else {
 			bufferManager.addToOutgoingBuffer(message);
-			bufferManager.clearDelayOutgoingMessage();
+			if (toSelf) {
+				bufferManager.clearDelayOutgoingMessage();
+			}
 		}
 		return true;
 	}

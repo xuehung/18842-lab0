@@ -93,6 +93,7 @@ public class MessageClient implements Runnable {
 							mp.logEvent(ts, logtext);
 						}
 					}
+					boolean toSelf = (localName.equals(message.getDest())) && (localName.equals(message.getSrc()));
 					Rule matchRule = ruleManager.matchReceiveRule(message);
 
 					if (matchRule != null) {
@@ -114,7 +115,9 @@ public class MessageClient implements Runnable {
 							
 							bufferManager.addToIncomingBuffer(message);
 							bufferManager.addToIncomingBuffer(duplicateMsg);
-							bufferManager.clearDelayIncomingMessage(ms);
+							if (toSelf) {
+								bufferManager.clearDelayIncomingMessage(ms);
+							}
 							break;
 						case delay:
 							bufferManager.delayIncomingMessage(message);
@@ -126,7 +129,9 @@ public class MessageClient implements Runnable {
 						} else {
 							bufferManager.addToIncomingBuffer(message);
 						}
-						bufferManager.clearDelayIncomingMessage(ms);
+						if (toSelf) {
+							bufferManager.clearDelayIncomingMessage(ms);
+						}
 					}
 
 				} catch (IOException e) {
