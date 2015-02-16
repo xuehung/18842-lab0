@@ -5,16 +5,12 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import time.clock.ClockFactory;
 import time.clock.ClockService;
-import time.clock.ClockType;
 import time.timestamp.TimeStamp;
-import time.timestamp.VectorTimeStamp;
 import datatype.LogEvent;
 import datatype.Message;
 import datatype.MulticastMessage;
@@ -129,9 +125,14 @@ public class MessagePasser {
 		sendingThread.start();
 	}
 
-	public void send(Message message) {
+	/**
+	 * Send a message
+	 * @param message
+	 * @return indicates whether the message is dropped
+	 */
+	public boolean send(Message message) {
 		if (message == null || !this.nodeMap.containsKey(message.getDest())) {
-			return;
+			return false;
 		}
 		
 		message.setSource(this.localName);
@@ -153,7 +154,7 @@ public class MessagePasser {
 			System.out.println("matchRule = "+matchRule.getAction());
 			switch (matchRule.getAction()) {
 			case drop:
-				return;
+				return false;
 			case duplicate:
 				/* duplicate field is already set in clone */
 				Message duplicateMsg = message.clone();
@@ -169,6 +170,7 @@ public class MessagePasser {
 			bufferManager.addToOutgoingBuffer(message);
 			bufferManager.clearDelayOutgoingMessage();
 		}
+		return true;
 	}
 
 	/**
@@ -206,23 +208,8 @@ public class MessagePasser {
 	
 	
 	public void multicast(MulticastMessage message) {
-		ms.RCOMulticast(message);
+		if (message != null && this.groupMap.containsKey(message.getGroupName())) {
+			ms.RCOMulticast(message);
+		}
 	}
-	
-	
-
-	public void example() {
-		ClockService clock = ClockFactory.getClockInstance(ClockType.LOGICAL,null,null);
-		ClockService clock2=ClockFactory.getClockInstance(ClockType.VECTOR, this.configLoader.getNodeList(), this.localName);
-		TimeStamp timestamp = clock.getTime();
-		TimeStamp timestamp2 = clock2.getTime();
-		TimeStampedMessage msg = new TimeStampedMessage("dest", "kind", null);
-		msg.setTimestamp(timestamp);
-		this.send(msg);
-	}
-	
-	
-	
-	
-	
 }

@@ -19,6 +19,7 @@ public class MessageServer implements Runnable {
 	private RuleManager ruleManager = null;
 	private MessagePasser mp = null;
 	private ConfigLoader configLoader = null;
+	
 	public MessageServer(MessagePasser mp,
 			ServerSocket listener, 
 			BufferManager bufferManager,

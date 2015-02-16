@@ -40,10 +40,10 @@ groups:
       - charlie
 
 sendRules : 
-  - action: duplicate
-    src: alice
+  - action: drop
+    src: charlie
     dest: bob
-    kind: duplicate
+    kind: drop
 
 
 receiveRules :
