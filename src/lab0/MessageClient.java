@@ -115,7 +115,7 @@ public class MessageClient implements Runnable {
 							
 							bufferManager.addToIncomingBuffer(message);
 							bufferManager.addToIncomingBuffer(duplicateMsg);
-							if (toSelf) {
+							if (!toSelf) {
 								bufferManager.clearDelayIncomingMessage(ms);
 							}
 							break;
@@ -129,7 +129,7 @@ public class MessageClient implements Runnable {
 						} else {
 							bufferManager.addToIncomingBuffer(message);
 						}
-						if (toSelf) {
+						if (!toSelf) {
 							bufferManager.clearDelayIncomingMessage(ms);
 						}
 					}

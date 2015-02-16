@@ -164,7 +164,7 @@ public class MessagePasser {
 				Message duplicateMsg = message.clone();
 				bufferManager.addToOutgoingBuffer(message);
 				bufferManager.addToOutgoingBuffer(duplicateMsg);
-				if (toSelf) {
+				if (!toSelf) {
 					bufferManager.clearDelayOutgoingMessage();
 				}
 				break;
@@ -174,7 +174,7 @@ public class MessagePasser {
 			}
 		} else {
 			bufferManager.addToOutgoingBuffer(message);
-			if (toSelf) {
+			if (!toSelf) {
 				bufferManager.clearDelayOutgoingMessage();
 			}
 		}
