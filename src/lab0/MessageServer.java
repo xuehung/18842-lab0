@@ -18,14 +18,15 @@ public class MessageServer implements Runnable {
 	private Map<String, Socket> socketMap = null;
 	private RuleManager ruleManager = null;
 	private MessagePasser mp = null;
-	
+	private ConfigLoader configLoader = null;
 	public MessageServer(MessagePasser mp,
 			ServerSocket listener, 
 			BufferManager bufferManager,
 			Map<String, Socket> socketMap,
 			Map<String, Node> nodeMap,
 			RuleManager ruleManager,
-			String localName) {
+			String localName,
+			ConfigLoader configLoader) {
 		this.listener = listener;
 		this.bufferManager = bufferManager;
 		this.socketMap = socketMap;
@@ -33,6 +34,7 @@ public class MessageServer implements Runnable {
 		this.ruleManager = ruleManager;
 		this.localName = localName;
 		this.mp = mp;
+		this.configLoader = configLoader;
 	}
 	
 	@Override
@@ -61,7 +63,7 @@ public class MessageServer implements Runnable {
 				Node node = this.nodeMap.get(src);
 				socketMap.put(src, socket);
 				if (!src.equals(localName)) {
-					Thread client = new Thread(new MessageClient(mp, node, bufferManager, socketMap, localName, ruleManager));
+					Thread client = new Thread(new MessageClient(mp, node, bufferManager, socketMap, localName, ruleManager, configLoader));
 					client.start();
 				}
 				

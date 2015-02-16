@@ -10,6 +10,7 @@ import time.clock.ClockFactory;
 import time.clock.ClockService;
 import time.timestamp.TimeStamp;
 import datatype.Message;
+import datatype.MulticastMessage;
 import datatype.Node;
 import datatype.Rule;
 import datatype.TimeStampedMessage;
@@ -23,12 +24,12 @@ public class MessageClient implements Runnable {
 	private RuleManager ruleManager = null;
 	private ClockService clockService = null;
 	private MessagePasser mp = null;
-
+	private MulticastService ms = null;
 	public MessageClient(MessagePasser mp,
 			Node destNode,
 			BufferManager bufferManager,
 			Map<String, Socket> socketMap, String localName,
-			RuleManager ruleManager) {
+			RuleManager ruleManager, ConfigLoader configLoader) {
 		this.mp = mp;
 		this.bufferManager = bufferManager;
 		this.socketMap = socketMap;
@@ -37,6 +38,8 @@ public class MessageClient implements Runnable {
 		this.socket = this.socketMap.get(destNode.getName());
 		this.ruleManager = ruleManager;
 		this.clockService = ClockFactory.getClockInstance();
+		this.ms = MulticastService.getInstance(configLoader, localName, mp, bufferManager);
+		//new MulticastService(configLoader, localName, mp, bufferManager); 
 	}
 
 	@Override
@@ -102,8 +105,12 @@ public class MessageClient implements Runnable {
 							/* duplicate field is already set in clone */
 							Message duplicateMsg = message.clone();
 							
-							add MulticastService.deliver here
-							
+							if (message instanceof MulticastMessage) {
+								ms.BDeliver((MulticastMessage)message);
+							} 
+							if (duplicateMsg instanceof MulticastMessage) {
+								ms.BDeliver((MulticastMessage)duplicateMsg);
+							} 
 							
 							bufferManager.addToIncomingBuffer(message);
 							bufferManager.addToIncomingBuffer(duplicateMsg);
@@ -115,7 +122,7 @@ public class MessageClient implements Runnable {
 						}
 					} else {
 						if (message instanceof MulticastMessage) {
-							ms.BDeliver(message);
+							ms.BDeliver((MulticastMessage)message);
 						} else {
 							bufferManager.addToIncomingBuffer(message);
 							bufferManager.clearDelayIncomingMessage();

@@ -17,6 +17,7 @@ import time.timestamp.TimeStamp;
 import time.timestamp.VectorTimeStamp;
 import datatype.LogEvent;
 import datatype.Message;
+import datatype.MulticastMessage;
 import datatype.Node;
 import datatype.Rule;
 import datatype.TimeStampedMessage;
@@ -36,6 +37,7 @@ public class MessagePasser {
 	private ClockService clockService = null;
 	private int seqNumCounter = 0;
 	private Map<String, Groups> groupMap = null;
+	private MulticastService ms = null;
 	public MessagePasser(String configFilename, String localName) throws IOException {
 		
 		System.out.printf("##### MessagePasser(name: %s) is initialized #####\n\n", localName);
@@ -47,9 +49,10 @@ public class MessagePasser {
 		this.socketMap = new HashMap<String, Socket>();
 		this.bufferManager = new BufferManager();
 		this.groupMap = new HashMap<String, Groups>();
+		
 		/* parse configuration */
 		this.loadConfig();
-		
+		this.ms = MulticastService.getInstance(configLoader, localName, this, bufferManager); 
 		if (configLoader.getClockType() != null) {
 			clockService = ClockFactory.getClockInstance(configLoader.getClockType(), this.configLoader.getNodeList(), this.localName);
 			System.out.println(configLoader.getClockType());
@@ -71,7 +74,7 @@ public class MessagePasser {
 		for (String name : this.nodeMap.keySet()) {
 			if (name.compareTo(this.localName) >= 0) {				
 				Node destNode = this.nodeMap.get(name);
-				Thread client = new Thread(new MessageClient(this, destNode, bufferManager, socketMap, localName, ruleManager));
+				Thread client = new Thread(new MessageClient(this, destNode, bufferManager, socketMap, localName, ruleManager, configLoader));
 				client.start();
 			}
 		}
@@ -97,7 +100,7 @@ public class MessagePasser {
 		this.listener = new ServerSocket(port);
 		Thread serverThread = new Thread(new MessageServer(this, this.listener,
 				bufferManager, this.socketMap, this.nodeMap,
-				this.ruleManager, localName));
+				this.ruleManager, localName, configLoader));
 		serverThread.start();
 	}
 	
@@ -203,26 +206,7 @@ public class MessagePasser {
 	
 	
 	public void multicast(String groupName, Message message) {
-		
-		ms.RCOMulticast(message)
-		
-		/*
-		String kind = message.getKind();
-		Object data = message.getData();
-		
-		if(!groupMap.keySet().contains(groupName)) {
-			System.out.println("if");
-				return;
-		}
-		else {
-
-			for (String dest : groupMap.get(groupName).getMembers()) {
-				
-				Message msg = new TimeStampedMessage(dest, kind, data);
-				this.send(msg);
-			}
-		} 
-		*/
+		ms.RCOMulticast((MulticastMessage)message);
 	}
 	
 	
