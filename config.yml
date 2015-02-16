@@ -40,10 +40,8 @@ groups:
       - charlie
 
 sendRules : 
-  - action: drop
-    src: charlie
-    dest: bob
-    kind: drop
+  - action: delay
+    kind: delay
 
 
 receiveRules :

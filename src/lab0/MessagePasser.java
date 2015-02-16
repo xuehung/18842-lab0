@@ -84,7 +84,7 @@ public class MessagePasser {
 	    /* configuration */
 		this.nodeMap = configLoader.getNodeMap();
 		this.groupMap = configLoader.getGroups();
-		this.ruleManager = new RuleManager(configLoader);
+		this.ruleManager = new RuleManager(configLoader,localName);
 	  
 	}
 	
