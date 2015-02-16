@@ -16,14 +16,12 @@ public class BufferManager {
 	private LinkedBlockingQueue<Message> outgoingBuffer = null;
 	private Queue<Message> incomingDelayQueue = null;
 	private Queue<Message> outgoingDelayQueue = null;
-	private MulticastService ms = null;
 	
-	public BufferManager(MulticastService ms) {	
+	public BufferManager() {	
 		this.incomingBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
 		this.outgoingBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
 		this.incomingDelayQueue = new ArrayDeque<Message>();
 		this.outgoingDelayQueue = new ArrayDeque<Message>();
-		this.ms = ms;
 	}
 	
 	public void addToOutgoingBuffer(Message message) {
@@ -85,7 +83,7 @@ public class BufferManager {
 		outgoingDelayQueue.clear();
 	}
 	
-	public synchronized void clearDelayIncomingMessage() {
+	public synchronized void clearDelayIncomingMessage(MulticastService ms) {
 		for (Message message : incomingDelayQueue) {
 			if (message instanceof MulticastMessage) {
 				ms.BDeliver((MulticastMessage)message);

@@ -114,7 +114,7 @@ public class MessageClient implements Runnable {
 							
 							bufferManager.addToIncomingBuffer(message);
 							bufferManager.addToIncomingBuffer(duplicateMsg);
-							bufferManager.clearDelayIncomingMessage();
+							bufferManager.clearDelayIncomingMessage(ms);
 							break;
 						case delay:
 							bufferManager.delayIncomingMessage(message);
@@ -126,7 +126,7 @@ public class MessageClient implements Runnable {
 						} else {
 							bufferManager.addToIncomingBuffer(message);
 						}
-						bufferManager.clearDelayIncomingMessage();
+						bufferManager.clearDelayIncomingMessage(ms);
 					}
 
 				} catch (IOException e) {

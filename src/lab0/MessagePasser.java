@@ -43,7 +43,7 @@ public class MessagePasser {
 		this.localName = localName;
 		this.nodeMap = new HashMap<String, Node>();
 		this.socketMap = new HashMap<String, Socket>();
-		
+		this.bufferManager = new BufferManager();
 		this.groupMap = new HashMap<String, Groups>();
 		
 		/* parse configuration */
@@ -54,7 +54,7 @@ public class MessagePasser {
 			System.out.println(configLoader.getClockType());
 		}
 		
-		this.bufferManager = new BufferManager(ms);
+		
 		
 		/* create server socket for listening*/
 		if (this.nodeMap.containsKey(this.localName)) {
