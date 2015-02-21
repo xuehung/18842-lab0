@@ -16,12 +16,14 @@ public class BufferManager {
 	private LinkedBlockingQueue<Message> outgoingBuffer = null;
 	private Queue<Message> incomingDelayQueue = null;
 	private Queue<Message> outgoingDelayQueue = null;
+	private MessagePasser mp = null;
 	
-	public BufferManager() {	
+	public BufferManager(MessagePasser mp) {	
 		this.incomingBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
 		this.outgoingBuffer = new LinkedBlockingQueue<Message>(BUFFER_LEN);
 		this.incomingDelayQueue = new ArrayDeque<Message>();
 		this.outgoingDelayQueue = new ArrayDeque<Message>();
+		this.mp = mp;
 	}
 	
 	public void addToOutgoingBuffer(Message message) {
@@ -29,7 +31,19 @@ public class BufferManager {
 	}
 	
 	public void addToIncomingBuffer(Message message) {
-		incomingBuffer.add(message);
+		String kind = message.getKind();
+		if (kind == null) {
+			return;
+		}
+		if (kind.equals(Mutex.MUTEX_REQUEST)) {
+			mp.receiveRequest(message);
+		} else if (kind.equals(Mutex.MUTEX_RELEASE)) {
+			mp.receiveRealse();
+		} else if (kind.equals(Mutex.MUTEX_REPLY)) {
+			mp.receiveReply();
+		} else {
+			incomingBuffer.add(message);
+		}
 	}
 	
 	/**

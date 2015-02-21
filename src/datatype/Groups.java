@@ -1,9 +1,7 @@
-package lab0;
+package datatype;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import datatype.Node;
 
 public class Groups {
 	

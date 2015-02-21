@@ -12,8 +12,7 @@ clock: vector# logical or vector
 configuration :
   - name : alice
     ip : 127.0.0.1
-    port : 12344 # This is the incoming port on which MP will listen
-                 # May be changed for further communication as usual
+    port : 12344 
   - name : bob
     ip : 127.0.0.1
     port : 14255
@@ -23,22 +22,54 @@ configuration :
   - name : daphnie
     ip : 127.0.0.1
     port : 1987
-  - name : logger
+  - name : eason
+    ip : 127.0.0.1
+    port : 1988
+  - name : flora
     ip : 127.0.0.1
     port : 1989
-
+  - name : gaga
+    ip : 127.0.0.1
+    port : 1990  
+  #- name : logger
+  #  ip : 127.0.0.1
+  #  port : 1989
 groups:
-  - name: Group1
+  - name: alice
     members:
       - alice
       - bob
       - charlie
-  - name: Group2
+  - name: bob
     members:
-      - daphnie
       - bob
+      - daphnie
+      - flora
+  - name: charlie
+    members:
       - charlie
-
+      - eason
+      - flora
+  - name: daphnie
+    members:
+      - alice
+      - daphnie
+      - eason
+  - name: eason
+    members:
+      - bob
+      - eason
+      - gaga
+  - name: flora
+    members:
+      - alice
+      - flora
+      - gaga
+  - name: gaga
+    members:
+      - charlie
+      - daphnie
+      - gaga
 sendRules : 
   - action: delay
     kind: delay

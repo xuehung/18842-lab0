@@ -2,6 +2,7 @@ package demo;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -159,6 +160,36 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		    					} catch (IOException e1) {
 		    						e1.printStackTrace();
 		    					}
+		        			} else if ("request".equals(cmdType)) {
+		        				input.setEditable(false);
+		        				input.setBackground(Color.GRAY);
+		        				mp.requestResource();
+		        				input.setBackground(Color.WHITE);
+		        				input.setEditable(true);
+							try {
+								document.insertBeforeEnd(
+										document.getElement("body"),
+										"<div align='right'>" + "<p>"
+												+ "You got the resource!"
+												+ "</p><br></div>");
+							} catch (BadLocationException e1) {
+								e1.printStackTrace();
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+		        			} else if ("release".equals(cmdType)) {
+		        				mp.releaseResource();
+		        				try {
+									document.insertBeforeEnd(
+											document.getElement("body"),
+											"<div align='right'>" + "<p>"
+													+ "You released the resource!"
+													+ "</p><br></div>");
+								} catch (BadLocationException e1) {
+									e1.printStackTrace();
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
 		        			}
 		        		}		
 		        }

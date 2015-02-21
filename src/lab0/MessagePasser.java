@@ -6,11 +6,15 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.CountDownLatch;
 
 import time.clock.ClockFactory;
 import time.clock.ClockService;
 import time.timestamp.TimeStamp;
+import datatype.Groups;
 import datatype.LogEvent;
 import datatype.Message;
 import datatype.MulticastMessage;
@@ -34,6 +38,14 @@ public class MessagePasser {
 	private int seqNumCounter = 0;
 	private Map<String, Groups> groupMap = null;
 	private MulticastService ms = null;
+	
+	/* for mutual exclusion */
+	/* initialize with released */
+	MutextStatus mutextStatus = MutextStatus.RELEASED;
+	boolean voted = false;
+	Queue<Message> requestQueue = new LinkedList<Message>();
+	private CountDownLatch mutexLatch = null; 
+	
 	public MessagePasser(String configFilename, String localName) throws IOException {
 		
 		System.out.printf("##### MessagePasser(name: %s) is initialized #####\n\n", localName);
@@ -43,7 +55,7 @@ public class MessagePasser {
 		this.localName = localName;
 		this.nodeMap = new HashMap<String, Node>();
 		this.socketMap = new HashMap<String, Socket>();
-		this.bufferManager = new BufferManager();
+		this.bufferManager = new BufferManager(this);
 		this.groupMap = new HashMap<String, Groups>();
 		
 		/* parse configuration */
@@ -220,4 +232,88 @@ public class MessagePasser {
 			ms.RCOMulticast(message);
 		}
 	}
+	
+	/**
+	 * Called by application
+	 */
+	public void requestResource() {
+		
+		if (this.mutextStatus != MutextStatus.RELEASED) {
+			return;
+		}
+		this.mutextStatus = MutextStatus.WANTED;
+		int K = this.groupMap.get(localName).getMembers().size();
+		this.mutexLatch = new CountDownLatch(K);
+		/* multicast to peers in the group */
+		MulticastMessage mm = new MulticastMessage(localName, null, Mutex.MUTEX_REQUEST, null);
+		this.multicast(mm);
+		/* wait until get K replies */
+		try {
+			this.mutexLatch.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		// get the resource!
+		this.mutextStatus = MutextStatus.HELD;
+	}
+	
+	/**
+	 * Called by application
+	 */
+	public void releaseResource() {
+		if (this.mutextStatus != MutextStatus.HELD) {
+			return;
+		}
+		this.mutextStatus = MutextStatus.RELEASED;
+		// multicast to all process
+		MulticastMessage mm = new MulticastMessage(localName, null, Mutex.MUTEX_RELEASE, null);
+		this.multicast(mm);
+		// reset
+		this.mutexLatch = null;
+	}
+	
+	/**
+	 * called by client
+	 */
+	public void receiveReply() {
+		if (this.mutextStatus == MutextStatus.WANTED) {
+			this.mutexLatch.countDown();
+		}
+	}
+	
+	/**
+	 * called by client
+	 */
+	public void receiveRequest(Message message) {
+		if (this.mutextStatus == MutextStatus.HELD || this.voted) {
+			this.requestQueue.add(message);
+		} else {
+			// send reply to pi
+			// NOTE!!! it is originator
+			String dest = ((MulticastMessage)message).getOriginator();
+			TimeStampedMessage reply = new TimeStampedMessage(dest, Mutex.MUTEX_REPLY, null);
+			this.send(reply);
+			voted = true;
+		}
+	}
+	
+	/**
+	 * called by client
+	 */
+	public void receiveRealse() {
+		if (!this.requestQueue.isEmpty()) {
+			Message message = this.requestQueue.poll(); 
+			// send reply
+			String dest = ((MulticastMessage)message).getOriginator();
+			TimeStampedMessage reply = new TimeStampedMessage(dest, Mutex.MUTEX_REPLY, null);
+			this.send(reply);
+			this.voted = true;
+		} else {
+			voted = false;
+		}
+	}
+	
+	
+	
+	
 }

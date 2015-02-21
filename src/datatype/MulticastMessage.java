@@ -1,7 +1,8 @@
 package datatype;
 
 public class MulticastMessage extends TimeStampedMessage {
-
+	
+	
 	private static final long serialVersionUID = 1L;
 	private String groupName = null;
 	private String originator = null;
