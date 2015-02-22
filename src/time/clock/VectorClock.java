@@ -30,19 +30,15 @@ public class VectorClock extends ClockService {
 	}
 	@Override
 	public synchronized TimeStamp getTime(TimeStamp t) {
-		System.out.println("localPos"+localPos);
 		if (t instanceof VectorTimeStamp) {
 			int[] outVector = ((VectorTimeStamp)t).getTime();
-			System.out.println("size:"+ size);
 			for(int i = 0; i < size; i++) {
 				
 				if (i == localPos) {
 						this.vector[i]++;
-						System.out.println("local"+this.vector[i]);
 				}
 				else if (outVector[i] > this.vector[i]) {
 					this.vector[i] = outVector[i];
-					System.out.println("the others:" +this.vector[i]);
 				}
 			}
 			return new VectorTimeStamp(this.vector);

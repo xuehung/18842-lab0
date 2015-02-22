@@ -105,7 +105,7 @@ public class BufferManager {
 			if (message instanceof MulticastMessage) {
 				ms.BDeliver((MulticastMessage)message);
 			} else {
-				incomingBuffer.add(message);
+				this.addToIncomingBuffer(message);
 			}
 		}
 		incomingDelayQueue.clear();

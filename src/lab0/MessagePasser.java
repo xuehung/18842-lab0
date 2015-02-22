@@ -236,7 +236,7 @@ public class MessagePasser {
 	 * Called by application
 	 */
 	public void requestResource() {
-		System.out.println("request the resource");
+		System.out.println("\n\nrequest the resource");
 		if (this.mutextStatus != MutextStatus.RELEASED) {
 			System.err.println("MutextStatus is not released");
 			return;
@@ -261,7 +261,7 @@ public class MessagePasser {
 	 * Called by application
 	 */
 	public void releaseResource() {
-		System.out.println("release the resource");
+		System.out.println("\n\nrelease the resource");
 		if (this.mutextStatus != MutextStatus.HELD) {
 			System.err.println("MutextStatus is not held");
 			return;
@@ -287,12 +287,13 @@ public class MessagePasser {
 	 * called by client
 	 */
 	public void receiveRequest(Message message) {
+		String dest = ((MulticastMessage)message).getOriginator();
 		if (this.mutextStatus == MutextStatus.HELD || this.voted) {
 			this.requestQueue.add(message);
 		} else {
 			// send reply to pi
 			// NOTE!!! it is originator
-			String dest = ((MulticastMessage)message).getOriginator();
+			System.out.println("sent a REPLY to " + dest);
 			TimeStampedMessage reply = new TimeStampedMessage(dest, Mutex.MUTEX_REPLY, null);
 			this.send(reply);
 			voted = true;
@@ -312,6 +313,7 @@ public class MessagePasser {
 			this.send(reply);
 			this.voted = true;
 		} else {
+			System.out.println("requestQueue is empty");
 			voted = false;
 		}
 	}

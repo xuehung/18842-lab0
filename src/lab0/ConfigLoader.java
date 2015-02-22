@@ -62,7 +62,6 @@ public class ConfigLoader {
 	    Yaml yaml = new Yaml();
 		this.config = (Map<String, List<LinkedHashMap<String, Object>>>) yaml.load(input);
 		this.lastModified = this.configFile.lastModified();
-		System.out.println("Configuration reloaded!");
 		return true;
 	}
 	public Map<String, Groups> getGroups() {
@@ -70,7 +69,6 @@ public class ConfigLoader {
 		this.groupMap = new HashMap<String, Groups>();
 		
 		List<LinkedHashMap<String, Object>> groupInfo = this.config.get("groups");
-		System.out.println("Coming into getGroups");
 		for (LinkedHashMap<String, Object> group : groupInfo) {
 			String name = (String) group.get("name");
 			ArrayList<String> members =((ArrayList<String>)(group.get("members")));
@@ -127,7 +125,6 @@ public class ConfigLoader {
 //		List<List<Node>> groups = this.groups.get(fieldName);
 //	}
 	private void loadRule(List<Rule> ruleList, String fieldName) {
-		System.out.printf("\nloading rules: %s\n", fieldName);
 		List<LinkedHashMap<String, Object>> sendRuleList = this.config.get(fieldName);
 		if (sendRuleList != null) {
 			for (LinkedHashMap<String, Object> sendRule : sendRuleList) {
@@ -151,16 +148,11 @@ public class ConfigLoader {
 					rule.setKind(kind);
 					rule.setSeqNum(seqNum);
 					rule.setDuplicate(duplicate);
-					System.out.printf("rule (%s: %s -> %s, %s, %s, %s)\n",
-							rule.getAction(), rule.getSrc(), rule.getDest(),
-							rule.getKind(), rule.getSeqNum(),
-							rule.getDuplicate());
 				} else {
 					System.err.println("action field is missing or illegal");
 				}
 			}
 		}
-	    System.out.printf("%d rules are loaded\n", ruleList.size());
 	}
 	
 	public ClockType getClockType() {
