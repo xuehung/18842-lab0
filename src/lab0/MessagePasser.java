@@ -156,7 +156,7 @@ public class MessagePasser {
 			((TimeStampedMessage)message).setTimestamp(ts);
 			String logtext = String.format("%s sent a message to %s", 
 					message.getSrc(), message.getDest());
-			System.err.println(logtext);
+			System.out.println(logtext);
 			if (((TimeStampedMessage)message).isRequireLog()) {
 				this.logEvent(ts, logtext);
 			}
@@ -165,7 +165,6 @@ public class MessagePasser {
 		boolean toSelf = (localName.equals(message.getDest())) && (localName.equals(message.getSrc()));
 		
 		Rule matchRule = ruleManager.matchSendRule(message);
-		System.out.println("matchRule = "+matchRule);
 		if (matchRule != null) {
 			System.out.println("matchRule = "+matchRule.getAction());
 			switch (matchRule.getAction()) {
@@ -185,6 +184,7 @@ public class MessagePasser {
 				break;
 			}
 		} else {
+			System.out.println("not match any rule");
 			bufferManager.addToOutgoingBuffer(message);
 			if (!toSelf) {
 				bufferManager.clearDelayOutgoingMessage();
@@ -213,7 +213,6 @@ public class MessagePasser {
 	public void logEvent(String text, boolean toLogger) {
 		if (nodeMap.containsKey(ConfigLoader.LOGGER_NAME)) {
 			if (clockService != null) {
-				// TODO should increase
 				TimeStamp ts = clockService.getNonIncreTime();
 				if (toLogger) {
 					this.logEvent(ts, text);
@@ -237,8 +236,9 @@ public class MessagePasser {
 	 * Called by application
 	 */
 	public void requestResource() {
-		
+		System.out.println("request the resource");
 		if (this.mutextStatus != MutextStatus.RELEASED) {
+			System.err.println("MutextStatus is not released");
 			return;
 		}
 		this.mutextStatus = MutextStatus.WANTED;
@@ -261,7 +261,9 @@ public class MessagePasser {
 	 * Called by application
 	 */
 	public void releaseResource() {
+		System.out.println("release the resource");
 		if (this.mutextStatus != MutextStatus.HELD) {
+			System.err.println("MutextStatus is not held");
 			return;
 		}
 		this.mutextStatus = MutextStatus.RELEASED;
@@ -305,6 +307,7 @@ public class MessagePasser {
 			Message message = this.requestQueue.poll(); 
 			// send reply
 			String dest = ((MulticastMessage)message).getOriginator();
+			System.out.println("sent a REPLY to " + dest);
 			TimeStampedMessage reply = new TimeStampedMessage(dest, Mutex.MUTEX_REPLY, null);
 			this.send(reply);
 			this.voted = true;

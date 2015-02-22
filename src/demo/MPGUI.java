@@ -161,11 +161,11 @@ public class MPGUI implements Runnable {//implements ActionListener {
 		    						e1.printStackTrace();
 		    					}
 		        			} else if ("request".equals(cmdType)) {
-		        				input.setEditable(false);
 		        				input.setBackground(Color.GRAY);
+		        				input.setEditable(false);
 		        				mp.requestResource();
-		        				input.setBackground(Color.WHITE);
 		        				input.setEditable(true);
+		        				input.setBackground(Color.WHITE);
 							try {
 								document.insertBeforeEnd(
 										document.getElement("body"),

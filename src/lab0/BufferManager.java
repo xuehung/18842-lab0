@@ -36,10 +36,13 @@ public class BufferManager {
 			return;
 		}
 		if (kind.equals(Mutex.MUTEX_REQUEST)) {
+			System.out.println("# received a REQUEST from "+((MulticastMessage)message).getOriginator());
 			mp.receiveRequest(message);
 		} else if (kind.equals(Mutex.MUTEX_RELEASE)) {
+			System.out.println("# received a RELEASE from "+((MulticastMessage)message).getOriginator());
 			mp.receiveRealse();
 		} else if (kind.equals(Mutex.MUTEX_REPLY)) {
+			System.out.println("# received a REPLY from "+message.getSrc());
 			mp.receiveReply();
 		} else {
 			incomingBuffer.add(message);

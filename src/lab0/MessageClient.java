@@ -124,6 +124,7 @@ public class MessageClient implements Runnable {
 							break;
 						}
 					} else {
+						System.out.println("not match any rule");
 						if (message instanceof MulticastMessage) {
 							ms.BDeliver((MulticastMessage)message);
 						} else {
