@@ -1,0 +1,16 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0" is_locked="false">
+    <option name="myName" value="Project Default" />
+    <option name="myLocal" value="false" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="www.car4go.views.car4go" />
+          <option value="www.car4go.views.www" />
+          <option value="www.car4go.views.ShareEvent" />
+          <option value="www.car4go.views.UserShareEvent" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
