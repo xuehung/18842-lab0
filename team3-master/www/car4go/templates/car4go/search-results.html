@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+	<meta name="keywords" content="Transfers - Private Transport and Car Hire HTML Template" />
+	<meta name="description" content="Transfers - Private Transport and Car Hire HTML Template"/>
+	<meta name="author" content="themeenergy.com"/>
+	
+	<title>Transfers - Search results</title>
+	
+	{% load staticfiles %}
+	<link rel="stylesheet" type="text/css" href="{% static 'car4go/css/theme-pink.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'car4go/css/style.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'car4go/css/animate.css' %}" />
+
+	<link href='http://fonts.googleapis.com/css?family=Raleway:400,500,600,700|Montserrat:400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="{% static 'car4go/images/favicon.ico' %}" />
+
+    
+  </head>
+  
+  <body>
+    <!-- Header -->
+	<header class="header" role="banner">
+		<div class="wrap">
+			
+				
+				
+				<!-- Main Nav -->
+					<nav role="navigation" class="main-nav">
+						<ul>
+							<li>
+								<a href="index.html" title="">Home</a>
+							</li>
+							<li>
+								<a href="/share.html" title="Share">Share</a>
+							</li>
+						</ul>
+					</nav>
+				<!-- //Main Nav -->
+		</div>
+	</header>
+		<!-- //Header -->
+	
+	<!-- Main -->
+	<main class="main" role="main">
+		<!-- Search -->
+		<div class="advanced-search color">
+			<div class="wrap">
+				<form role="form">
+					<!-- Row -->
+					<div class="f-row">
+						<div class="form-group datepicker one-third">
+							<label for="dep-date">Departure date and time</label>
+							<input type="text" id="dep-date" value="28/08/2014" />
+						</div>
+						<div class="form-group select one-third">
+							<label>Pick up location</label>
+							<select>
+								<option>Select location</option>
+								<optgroup label="Germany">
+									<option value="Berlin Central Train Station">Berlin Central Train Station</option>
+									<option value="Berlin Schonefeld Airport" selected>Berlin Schonefeld Airport</option>
+									<option value="Berlin Tegel Airport">Berlin Tegel Airport</option>
+									<option value="Bremen Airport">Bremen Airport</option>
+									<option value="Cologne Bonn Airport">Cologne Bonn Airport</option>
+									<option value="Dortmund Airport">Dortmund Airport</option>
+									<option value="Dresden Airport">Dresden Airport</option>
+									<option value="Dusseldorf Airport">Dusseldorf Airport</option>
+									<option value="Frankfurt Hahn Airport">Frankfurt Hahn Airport</option>
+									<option value="Frankfurt International Airport">Frankfurt International Airport</option>
+									<option value="Friedrichshafen Airport">Friedrichshafen Airport</option>
+									<option value="Hamburg Finkenwerder Airport">Hamburg Finkenwerder Airport</option>
+									<option value="Hamburg Port">Hamburg Port</option>
+									<option value="Hamburg-Fuhlsbuttel Airport">Hamburg-Fuhlsbuttel Airport</option>
+									<option value="Hanover Lengenhagen Airport">Hanover Lengenhagen Airport</option>
+									<option value="Kiel Port">Kiel Port</option>
+									<option value="Leipzig Halle Airport">Leipzig Halle Airport</option>
+									<option value="Munich Airport">Munich Airport</option>
+									<option value="Nuremberg Airport">Nuremberg Airport</option>
+								</optgroup>
+								<optgroup label="Italy">
+									<option value="Alghero Airport">Alghero Airport</option>
+									<option value="Bari Airport">Bari Airport</option>
+									<option value="Bari Port">Bari Port</option>
+									<option value="Bergamo Airport">Bergamo Airport</option>
+									<option value="Bologna Airport">Bologna Airport</option>
+									<option value="Brindisi Airport">Brindisi Airport</option>
+									<option value="Cagliari Airport">Cagliari Airport</option>
+									<option value="Florence Airport">Florence Airport</option>
+									<option value="Florence Train Station">Florence Train Station</option>
+									<option value="Genoa Airport">Genoa Airport</option>
+									<option value="Genoa Port">Genoa Port</option>
+									<option value="Milan Central Train Station">Milan Central Train Station</option>
+									<option value="Milan City Centre">Milan City Centre</option>
+									<option value="Naples Airport">Naples Airport</option>
+								</optgroup>
+								<optgroup label="Spain">
+									<option value="Alicante Airport">Alicante Airport</option>
+									<option value="Almeria Airport">Almeria Airport</option>
+									<option value="Barcelona Airport">Barcelona Airport</option>
+									<option value="Granada Airport">Granada Airport</option>
+									<option value="Jerez de la Frontera">Jerez de la Frontera</option>
+									<option value="Leon Airport">Leon Airport</option>
+									<option value="Madrid Atocha Train Station">Madrid Atocha Train Station</option>
+									<option value="Madrid Barajas Airport">Madrid Barajas Airport</option>
+									<option value="Pamplona Airport">Pamplona Airport</option>
+									<option value="Santander Airport">Santander Airport</option>
+									<option value="Seville Airport">Seville Airport</option>
+									<option value="Valencia Airport">Valencia Airport</option>
+									<option value="Zaragoza Airport">Zaragoza Airport</option>
+								</optgroup>
+								<optgroup label="United Kingdom">
+									<option value="Belfast City Airport">Belfast City Airport</option>
+									<option value="Belfast International Airport">Belfast International Airport</option>
+									<option value="Bristol Airport">Bristol Airport</option>
+									<option value="Cardiff Airport">Cardiff Airport</option>
+									<option value="Edinburgh Airport">Edinburgh Airport</option>
+									<option value="Glasgow International Airport">Glasgow International Airport</option>
+									<option value="London City Airport">London City Airport</option>
+									<option value="London Gatwick Airport">London Gatwick Airport</option>
+									<option value="London Heathrow Airport">London Heathrow Airport</option>
+									<option value="London Stansted Airport">London Stansted Airport</option>
+									<option value="Manchester Airport">Manchester Airport</option>
+									<option value="Southampton Airport">Southampton Airport</option>
+								</optgroup>
+							</select>
+						</div>
+						<div class="form-group select one-third">
+							<label>Drop off location</label>
+							<select>
+								<option>Select location</option>
+								<optgroup label="Germany">
+									<option value="Berlin Central Train Station" selected>Berlin Central Train Station</option>
+									<option value="Berlin Schonefeld Airport">Berlin Schonefeld Airport</option>
+									<option value="Berlin Tegel Airport">Berlin Tegel Airport</option>
+									<option value="Bremen Airport">Bremen Airport</option>
+									<option value="Cologne Bonn Airport">Cologne Bonn Airport</option>
+									<option value="Dortmund Airport">Dortmund Airport</option>
+									<option value="Dresden Airport">Dresden Airport</option>
+									<option value="Dusseldorf Airport">Dusseldorf Airport</option>
+									<option value="Frankfurt Hahn Airport">Frankfurt Hahn Airport</option>
+									<option value="Frankfurt International Airport">Frankfurt International Airport</option>
+									<option value="Friedrichshafen Airport">Friedrichshafen Airport</option>
+									<option value="Hamburg Finkenwerder Airport">Hamburg Finkenwerder Airport</option>
+									<option value="Hamburg Port">Hamburg Port</option>
+									<option value="Hamburg-Fuhlsbuttel Airport">Hamburg-Fuhlsbuttel Airport</option>
+									<option value="Hanover Lengenhagen Airport">Hanover Lengenhagen Airport</option>
+									<option value="Kiel Port">Kiel Port</option>
+									<option value="Leipzig Halle Airport">Leipzig Halle Airport</option>
+									<option value="Munich Airport">Munich Airport</option>
+									<option value="Nuremberg Airport">Nuremberg Airport</option>
+								</optgroup>
+								<optgroup label="Italy">
+									<option value="Alghero Airport">Alghero Airport</option>
+									<option value="Bari Airport">Bari Airport</option>
+									<option value="Bari Port">Bari Port</option>
+									<option value="Bergamo Airport">Bergamo Airport</option>
+									<option value="Bologna Airport">Bologna Airport</option>
+									<option value="Brindisi Airport">Brindisi Airport</option>
+									<option value="Cagliari Airport">Cagliari Airport</option>
+									<option value="Florence Airport">Florence Airport</option>
+									<option value="Florence Train Station">Florence Train Station</option>
+									<option value="Genoa Airport">Genoa Airport</option>
+									<option value="Genoa Port">Genoa Port</option>
+									<option value="Milan Central Train Station">Milan Central Train Station</option>
+									<option value="Milan City Centre">Milan City Centre</option>
+									<option value="Naples Airport">Naples Airport</option>
+								</optgroup>
+								<optgroup label="Spain">
+									<option value="Alicante Airport">Alicante Airport</option>
+									<option value="Almeria Airport">Almeria Airport</option>
+									<option value="Barcelona Airport">Barcelona Airport</option>
+									<option value="Granada Airport">Granada Airport</option>
+									<option value="Jerez de la Frontera">Jerez de la Frontera</option>
+									<option value="Leon Airport">Leon Airport</option>
+									<option value="Madrid Atocha Train Station">Madrid Atocha Train Station</option>
+									<option value="Madrid Barajas Airport">Madrid Barajas Airport</option>
+									<option value="Pamplona Airport">Pamplona Airport</option>
+									<option value="Santander Airport">Santander Airport</option>
+									<option value="Seville Airport">Seville Airport</option>
+									<option value="Valencia Airport">Valencia Airport</option>
+									<option value="Zaragoza Airport">Zaragoza Airport</option>
+								</optgroup>
+								<optgroup label="United Kingdom">
+									<option value="Belfast City Airport">Belfast City Airport</option>
+									<option value="Belfast International Airport">Belfast International Airport</option>
+									<option value="Bristol Airport">Bristol Airport</option>
+									<option value="Cardiff Airport">Cardiff Airport</option>
+									<option value="Edinburgh Airport">Edinburgh Airport</option>
+									<option value="Glasgow International Airport">Glasgow International Airport</option>
+									<option value="London City Airport">London City Airport</option>
+									<option value="London Gatwick Airport">London Gatwick Airport</option>
+									<option value="London Heathrow Airport">London Heathrow Airport</option>
+									<option value="London Stansted Airport">London Stansted Airport</option>
+									<option value="Manchester Airport">Manchester Airport</option>
+									<option value="Southampton Airport">Southampton Airport</option>
+								</optgroup>
+							</select>
+						</div>
+					</div>
+					<!-- //Row -->
+					
+					<!-- Row -->
+					<div class="f-row">
+						<div class="form-group datepicker one-third">
+							<label for="ret-date">Return date and time</label>
+							<input type="text" id="ret-date" value="02/09/2014" />
+						</div>
+						<div class="form-group select">
+							<label>Pick up location</label>
+							<select>
+								<option>Select location</option>
+								<optgroup label="Germany">
+									<option value="Berlin Central Train Station" selected>Berlin Central Train Station</option>
+									<option value="Berlin Schonefeld Airport">Berlin Schonefeld Airport</option>
+									<option value="Berlin Tegel Airport">Berlin Tegel Airport</option>
+									<option value="Bremen Airport">Bremen Airport</option>
+									<option value="Cologne Bonn Airport">Cologne Bonn Airport</option>
+									<option value="Dortmund Airport">Dortmund Airport</option>
+									<option value="Dresden Airport">Dresden Airport</option>
+									<option value="Dusseldorf Airport">Dusseldorf Airport</option>
+									<option value="Frankfurt Hahn Airport">Frankfurt Hahn Airport</option>
+									<option value="Frankfurt International Airport">Frankfurt International Airport</option>
+									<option value="Friedrichshafen Airport">Friedrichshafen Airport</option>
+									<option value="Hamburg Finkenwerder Airport">Hamburg Finkenwerder Airport</option>
+									<option value="Hamburg Port">Hamburg Port</option>
+									<option value="Hamburg-Fuhlsbuttel Airport">Hamburg-Fuhlsbuttel Airport</option>
+									<option value="Hanover Lengenhagen Airport">Hanover Lengenhagen Airport</option>
+									<option value="Kiel Port">Kiel Port</option>
+									<option value="Leipzig Halle Airport">Leipzig Halle Airport</option>
+									<option value="Munich Airport">Munich Airport</option>
+									<option value="Nuremberg Airport">Nuremberg Airport</option>
+								</optgroup>
+								<optgroup label="Italy">
+									<option value="Alghero Airport">Alghero Airport</option>
+									<option value="Bari Airport">Bari Airport</option>
+									<option value="Bari Port">Bari Port</option>
+									<option value="Bergamo Airport">Bergamo Airport</option>
+									<option value="Bologna Airport">Bologna Airport</option>
+									<option value="Brindisi Airport">Brindisi Airport</option>
+									<option value="Cagliari Airport">Cagliari Airport</option>
+									<option value="Florence Airport">Florence Airport</option>
+									<option value="Florence Train Station">Florence Train Station</option>
+									<option value="Genoa Airport">Genoa Airport</option>
+									<option value="Genoa Port">Genoa Port</option>
+									<option value="Milan Central Train Station">Milan Central Train Station</option>
+									<option value="Milan City Centre">Milan City Centre</option>
+									<option value="Naples Airport">Naples Airport</option>
+								</optgroup>
+								<optgroup label="Spain">
+									<option value="Alicante Airport">Alicante Airport</option>
+									<option value="Almeria Airport">Almeria Airport</option>
+									<option value="Barcelona Airport">Barcelona Airport</option>
+									<option value="Granada Airport">Granada Airport</option>
+									<option value="Jerez de la Frontera">Jerez de la Frontera</option>
+									<option value="Leon Airport">Leon Airport</option>
+									<option value="Madrid Atocha Train Station">Madrid Atocha Train Station</option>
+									<option value="Madrid Barajas Airport">Madrid Barajas Airport</option>
+									<option value="Pamplona Airport">Pamplona Airport</option>
+									<option value="Santander Airport">Santander Airport</option>
+									<option value="Seville Airport">Seville Airport</option>
+									<option value="Valencia Airport">Valencia Airport</option>
+									<option value="Zaragoza Airport">Zaragoza Airport</option>
+								</optgroup>
+								<optgroup label="United Kingdom">
+									<option value="Belfast City Airport">Belfast City Airport</option>
+									<option value="Belfast International Airport">Belfast International Airport</option>
+									<option value="Bristol Airport">Bristol Airport</option>
+									<option value="Cardiff Airport">Cardiff Airport</option>
+									<option value="Edinburgh Airport">Edinburgh Airport</option>
+									<option value="Glasgow International Airport">Glasgow International Airport</option>
+									<option value="London City Airport">London City Airport</option>
+									<option value="London Gatwick Airport">London Gatwick Airport</option>
+									<option value="London Heathrow Airport">London Heathrow Airport</option>
+									<option value="London Stansted Airport">London Stansted Airport</option>
+									<option value="Manchester Airport">Manchester Airport</option>
+									<option value="Southampton Airport">Southampton Airport</option>
+								</optgroup>
+							</select>
+						</div>
+						<div class="form-group select one-third">
+							<label>Drop off location</label>
+							<select>
+								<option>Select location</option>
+								<optgroup label="Germany">
+									<option value="Berlin Central Train Station">Berlin Central Train Station</option>
+									<option value="Berlin Schonefeld Airport" selected>Berlin Schonefeld Airport</option>
+									<option value="Berlin Tegel Airport">Berlin Tegel Airport</option>
+									<option value="Bremen Airport">Bremen Airport</option>
+									<option value="Cologne Bonn Airport">Cologne Bonn Airport</option>
+									<option value="Dortmund Airport">Dortmund Airport</option>
+									<option value="Dresden Airport">Dresden Airport</option>
+									<option value="Dusseldorf Airport">Dusseldorf Airport</option>
+									<option value="Frankfurt Hahn Airport">Frankfurt Hahn Airport</option>
+									<option value="Frankfurt International Airport">Frankfurt International Airport</option>
+									<option value="Friedrichshafen Airport">Friedrichshafen Airport</option>
+									<option value="Hamburg Finkenwerder Airport">Hamburg Finkenwerder Airport</option>
+									<option value="Hamburg Port">Hamburg Port</option>
+									<option value="Hamburg-Fuhlsbuttel Airport">Hamburg-Fuhlsbuttel Airport</option>
+									<option value="Hanover Lengenhagen Airport">Hanover Lengenhagen Airport</option>
+									<option value="Kiel Port">Kiel Port</option>
+									<option value="Leipzig Halle Airport">Leipzig Halle Airport</option>
+									<option value="Munich Airport">Munich Airport</option>
+									<option value="Nuremberg Airport">Nuremberg Airport</option>
+								</optgroup>
+								<optgroup label="Italy">
+									<option value="Alghero Airport">Alghero Airport</option>
+									<option value="Bari Airport">Bari Airport</option>
+									<option value="Bari Port">Bari Port</option>
+									<option value="Bergamo Airport">Bergamo Airport</option>
+									<option value="Bologna Airport">Bologna Airport</option>
+									<option value="Brindisi Airport">Brindisi Airport</option>
+									<option value="Cagliari Airport">Cagliari Airport</option>
+									<option value="Florence Airport">Florence Airport</option>
+									<option value="Florence Train Station">Florence Train Station</option>
+									<option value="Genoa Airport">Genoa Airport</option>
+									<option value="Genoa Port">Genoa Port</option>
+									<option value="Milan Central Train Station">Milan Central Train Station</option>
+									<option value="Milan City Centre">Milan City Centre</option>
+									<option value="Naples Airport">Naples Airport</option>
+								</optgroup>
+								<optgroup label="Spain">
+									<option value="Alicante Airport">Alicante Airport</option>
+									<option value="Almeria Airport">Almeria Airport</option>
+									<option value="Barcelona Airport">Barcelona Airport</option>
+									<option value="Granada Airport">Granada Airport</option>
+									<option value="Jerez de la Frontera">Jerez de la Frontera</option>
+									<option value="Leon Airport">Leon Airport</option>
+									<option value="Madrid Atocha Train Station">Madrid Atocha Train Station</option>
+									<option value="Madrid Barajas Airport">Madrid Barajas Airport</option>
+									<option value="Pamplona Airport">Pamplona Airport</option>
+									<option value="Santander Airport">Santander Airport</option>
+									<option value="Seville Airport">Seville Airport</option>
+									<option value="Valencia Airport">Valencia Airport</option>
+									<option value="Zaragoza Airport">Zaragoza Airport</option>
+								</optgroup>
+								<optgroup label="United Kingdom">
+									<option value="Belfast City Airport">Belfast City Airport</option>
+									<option value="Belfast International Airport">Belfast International Airport</option>
+									<option value="Bristol Airport">Bristol Airport</option>
+									<option value="Cardiff Airport">Cardiff Airport</option>
+									<option value="Edinburgh Airport">Edinburgh Airport</option>
+									<option value="Glasgow International Airport">Glasgow International Airport</option>
+									<option value="London City Airport">London City Airport</option>
+									<option value="London Gatwick Airport">London Gatwick Airport</option>
+									<option value="London Heathrow Airport">London Heathrow Airport</option>
+									<option value="London Stansted Airport">London Stansted Airport</option>
+									<option value="Manchester Airport">Manchester Airport</option>
+									<option value="Southampton Airport">Southampton Airport</option>
+								</optgroup>
+							</select>
+						</div>
+					</div>
+					<!-- //Row -->
+					
+					<!-- Row -->
+					<div class="f-row">
+						<div class="form-group right">
+							<button type="submit" class="btn large black">Find a transfer</button>
+						</div>
+						<div class="form-group spinner">
+							<label for="people">How many people <small>(including children)</small>?</label>
+							<input type="number" id="people" min="1" value="2"/>
+						</div>
+						<div class="form-group radios">
+							<div>
+								<input type="radio" name="radio" id="return" value="return" />
+								<label for="return">Return</label>
+							</div>
+							<div>
+								<input type="radio" name="radio" id="oneway" value="oneway" checked />
+								<label for="oneway">One way</label>
+							</div>
+						</div>
+					</div>
+					<!--// Row -->
+				</form>
+			</div>
+		</div>
+		<!-- //Search -->
+		
+		<div class="wrap">
+			<div class="row">
+				<!--- Content -->
+				<div class="full-width content">
+					<h2>Select transfer type for your DEPARTURE</h2>
+					
+					<div class="results">
+						<!-- Item -->
+						<article class="result">
+							<div class="one-fourth heightfix"><img src="http://placehold.it/1024x768" alt="" /></div>
+							<div class="one-half heightfix">
+								<h3>Private car <a href="javascript:void(0)" class="trigger color" title="Read more">?</a></h3>
+								<ul>
+									<li>
+										<span class="ico people"></span>
+										<p>Max <strong>3 people</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico luggage"></span>
+										<p>Max <strong>3 suitcases</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico time"></span>
+										<p>Estimated time <br /><strong>50 mins</strong></p>
+									</li>
+								</ul>
+							</div>
+							<div class="one-fourth heightfix">
+								<div>
+									<div class="price">130,00 <small>USD</small></div>
+									<span class="meta">per passenger</span>
+									<a href="booking-step1.html" class="btn grey large">select</a>
+								</div>
+							</div>
+							<div class="full-width information">	
+								<a href="javascript:void(0)" class="close color" title="Close">x</a>
+								<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+							</div>
+						</article>
+						<!-- //Item -->
+						
+						<!-- Item -->
+						<article class="result">
+							<div class="one-fourth heightfix"><img src="http://placehold.it/1024x768" alt="" /></div>
+							<div class="one-half heightfix">
+								<h3>Private shuttle <a href="javascript:void(0)" class="trigger color" title="Read more">?</a></h3>
+								<ul>
+									<li>
+										<span class="ico people"></span>
+										<p>Max <strong>3 people</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico luggage"></span>
+										<p>Max <strong>3 suitcases</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico time"></span>
+										<p>Estimated time <br /><strong>50 mins</strong></p>
+									</li>
+								</ul>
+							</div>
+							<div class="one-fourth heightfix">
+								<div>
+									<div class="price">130,00 <small>USD</small></div>
+									<span class="meta">per passenger</span>
+									<a href="booking-step1.html" class="btn grey large">select</a>
+								</div>
+							</div>
+							<div class="full-width information">	
+								<a href="javascript:void(0)" class="close color" title="Close">x</a>
+								<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+							</div>
+						</article>
+						<!-- //Item -->
+						
+						<!-- Item -->
+						<article class="result">
+							<div class="one-fourth heightfix"><img src="http://placehold.it/1024x768" alt="" /></div>
+							<div class="one-half heightfix">
+								<h3>Shared shuttle <a href="javascript:void(0)" class="trigger color" title="Read more">?</a></h3>
+								<ul>
+									<li>
+										<span class="ico people"></span>
+										<p>Max <strong>3 people</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico luggage"></span>
+										<p>Max <strong>3 suitcases</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico time"></span>
+										<p>Estimated time <br /><strong>50 mins</strong></p>
+									</li>
+								</ul>
+							</div>
+							<div class="one-fourth heightfix">
+								<div>
+									<div class="price">130,00 <small>USD</small></div>
+									<span class="meta">per passenger</span>
+									<a href="booking-step1.html" class="btn grey large">select</a>
+								</div>
+							</div>
+							<div class="full-width information">	
+								<a href="javascript:void(0)" class="close color" title="Close">x</a>
+								<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+							</div>
+						</article>
+						<!-- //Item -->
+						
+						<!-- Item -->
+						<article class="result">
+							<div class="one-fourth heightfix"><img src="http://placehold.it/1024x768" alt="" /></div>
+							<div class="one-half heightfix">
+								<h3>Private bus <a href="javascript:void(0)" class="trigger color" title="Read more">?</a></h3>
+								<ul>
+									<li>
+										<span class="ico people"></span>
+										<p>Max <strong>3 people</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico luggage"></span>
+										<p>Max <strong>3 suitcases</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico time"></span>
+										<p>Estimated time <br /><strong>50 mins</strong></p>
+									</li>
+								</ul>
+							</div>
+							<div class="one-fourth heightfix">
+								<div>
+									<div class="price">130,00 <small>USD</small></div>
+									<span class="meta">per passenger</span>
+									<a href="booking-step1.html" class="btn grey large">select</a>
+								</div>
+							</div>
+							<div class="full-width information">	
+								<a href="javascript:void(0)" class="close color" title="Close">x</a>
+								<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+							</div>
+						</article>
+						<!-- //Item -->
+						
+						<!-- Item -->
+						<article class="result">
+							<div class="one-fourth heightfix"><img src="http://placehold.it/1024x768" alt="" /></div>
+							<div class="one-half heightfix">
+								<h3>Private helicopter <a href="javascript:void(0)" class="trigger color" title="Read more">?</a></h3>
+								<ul>
+									<li>
+										<span class="ico people"></span>
+										<p>Max <strong>3 people</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico luggage"></span>
+										<p>Max <strong>3 suitcases</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico time"></span>
+										<p>Estimated time <br /><strong>50 mins</strong></p>
+									</li>
+								</ul>
+							</div>
+							<div class="one-fourth heightfix">
+								<div>
+									<div class="price">130,00 <small>USD</small></div>
+									<span class="meta">per passenger</span>
+									<a href="booking-step1.html" class="btn grey large">select</a>
+								</div>
+							</div>
+							<div class="full-width information">	
+								<a href="javascript:void(0)" class="close color" title="Close">x</a>
+								<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+							</div>
+						</article>
+						<!-- //Item -->
+					</div>
+					
+					<h2>Select transfer for your RETURN</h2>
+					
+					<div class="results">
+						<!-- Item -->
+						<article class="result">
+							<div class="one-fourth heightfix"><img src="http://placehold.it/1024x768" alt="" /></div>
+							<div class="one-half heightfix">
+								<h3>Private car <a href="javascript:void(0)" class="trigger color" title="Read more">?</a></h3>
+								<ul>
+									<li>
+										<span class="ico people"></span>
+										<p>Max <strong>3 people</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico luggage"></span>
+										<p>Max <strong>3 suitcases</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico time"></span>
+										<p>Estimated time <br /><strong>50 mins</strong></p>
+									</li>
+								</ul>
+							</div>
+							<div class="one-fourth heightfix">
+								<div>
+									<div class="price">130,00 <small>USD</small></div>
+									<span class="meta">per passenger</span>
+									<a href="booking-step1.html" class="btn grey large">select</a>
+								</div>
+							</div>
+							<div class="full-width information">	
+								<a href="javascript:void(0)" class="close color" title="Close">x</a>
+								<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+							</div>
+						</article>
+						<!-- //Item -->
+						
+						<!-- Item -->
+						<article class="result">
+							<div class="one-fourth heightfix"><img src="http://placehold.it/1024x768" alt="" /></div>
+							<div class="one-half heightfix">
+								<h3>Private shuttle <a href="javascript:void(0)" class="trigger color" title="Read more">?</a></h3>
+								<ul>
+									<li>
+										<span class="ico people"></span>
+										<p>Max <strong>3 people</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico luggage"></span>
+										<p>Max <strong>3 suitcases</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico time"></span>
+										<p>Estimated time <br /><strong>50 mins</strong></p>
+									</li>
+								</ul>
+							</div>
+							<div class="one-fourth heightfix">
+								<div>
+									<div class="price">130,00 <small>USD</small></div>
+									<span class="meta">per passenger</span>
+									<a href="booking-step1.html" class="btn grey large">select</a>
+								</div>
+							</div>
+							<div class="full-width information">	
+								<a href="javascript:void(0)" class="close color" title="Close">x</a>
+								<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+							</div>
+						</article>
+						<!-- //Item -->
+						
+						<!-- Item -->
+						<article class="result">
+							<div class="one-fourth heightfix"><img src="http://placehold.it/1024x768" alt="" /></div>
+							<div class="one-half heightfix">
+								<h3>Shared bus <a href="javascript:void(0)" class="trigger color" title="Read more">?</a></h3>
+								<ul>
+									<li>
+										<span class="ico people"></span>
+										<p>Max <strong>3 people</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico luggage"></span>
+										<p>Max <strong>3 suitcases</strong> <br />per vehicle</p>
+									</li>
+									<li>
+										<span class="ico time"></span>
+										<p>Estimated time <br /><strong>50 mins</strong></p>
+									</li>
+								</ul>
+							</div>
+							<div class="one-fourth heightfix">
+								<div>
+									<div class="price">130,00 <small>USD</small></div>
+									<span class="meta">per passenger</span>
+									<a href="booking-step1.html" class="btn grey large">select</a>
+								</div>
+							</div>
+							<div class="full-width information">	
+								<a href="javascript:void(0)" class="close color" title="Close">x</a>
+								<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+							</div>
+						</article>
+						<!-- //Item -->
+					</div>
+				</div>
+				<!--- //Content -->
+			</div>
+		</div>
+	</main>
+	<!-- //Main -->
+	
+	<!-- Footer -->
+	<footer class="footer black" role="contentinfo">
+		<div class="wrap">
+			<div class="row">
+				<!-- Column -->
+				<article class="one-half">
+					<h6>About us</h6>
+					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy.</p>
+				</article>
+				<!-- //Column -->
+				
+				<!-- Column -->
+				<article class="one-fourth">
+					<h6>Need help?</h6>
+					<p>Contact us via phone or email:</p>
+					<p class="contact-data"><span class="ico phone"></span> +1 555 555 555</p>
+					<p class="contact-data"><span class="ico email"></span> <a href="mailto:help@transfers.com">help@transfers.com</a></p>
+				</article>
+				<!-- //Column -->
+				
+				<!-- Column -->
+				<article class="one-fourth">
+					<h6>Follow us</h6>
+					<ul class="social">
+						<li class="facebook"><a href="#" title="facebook">facebook</a></li>
+						<li class="twitter"><a href="#" title="twitter">twitter</a></li>
+						<li class="gplus"><a href="#" title="gplus">google plus</a></li>
+						<li class="linkedin"><a href="#" title="linkedin">linkedin</a></li>
+						<li class="vimeo"><a href="#" title="vimeo">vimeo</a></li>
+						<li class="pinterest"><a href="#" title="pinterest">pinterest</a></li>
+					</ul>
+				</article>
+				<!-- //Column -->
+			</div>
+			
+			<div class="copy">
+				<p>Copyright 2014, Themeenergy. All rights reserved. </p>
+				
+				<nav role="navigation" class="foot-nav">
+					<ul>
+						<li><a href="#" title="Home">Home</a></li>
+						<li><a href="#" title="Blog">Blog</a></li>
+						<li><a href="#" title="About us">About us</a></li>
+						<li><a href="#" title="Contact us">Contact us</a></li>
+						<li><a href="#" title="Terms of use">Terms of use</a></li>
+						<li><a href="#" title="Help">Help</a></li>
+						<li><a href="#" title="For partners">For partners</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</footer>
+	<!-- //Footer -->
+	
+	<!-- Preloader -->
+	<div class="preloader">
+		<div id="followingBallsG">
+			<div id="followingBallsG_1" class="followingBallsG"></div>
+			<div id="followingBallsG_2" class="followingBallsG"></div>
+			<div id="followingBallsG_3" class="followingBallsG"></div>
+			<div id="followingBallsG_4" class="followingBallsG"></div>
+		</div>
+	</div>
+	<!-- //Preloader -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.min.js"></script>
+	<script src="js/jquery.uniform.min.js"></script>
+	<script src="js/jquery.datetimepicker.js"></script>
+	<script src="js/jquery.slicknav.min.js"></script>
+	<script src="js/wow.min.js"></script>
+	<script src="js/search.js"></script>
+	<script src="js/scripts.js"></script>
+	
+  </body>
+</html>

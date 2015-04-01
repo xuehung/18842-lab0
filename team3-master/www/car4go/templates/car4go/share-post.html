@@ -1,0 +1,188 @@
+{% extends "car4go/base.html" %}
+
+{% block content %}
+    {%load staticfiles %}
+    <body class="home">
+    <!-- Main -->
+    <main class="main" role="main">
+        <!-- Keyvisual -->
+        <div class="keyvisual">
+
+            <img src="{% static 'car4go/images/driver_san_francisco-wallpaper-1920x1440.jpg' %}" alt="" />
+        </div>
+        <!-- //Keyvisual -->
+        
+        <!-- Post -->
+        
+            <div class="wrap">
+                <div class = "row">
+                    <div class = "full-width content">
+                        <form role="form" action="/share/postEntry/" method="post">
+                            {% csrf_token %}
+                        <div class="actions">
+                        </div>
+                        <div class="f-row">
+                                
+                            <div class="one-half">
+                                <label for="first_name">First name</label>
+                                <input type="text" id="first_name" name="first_name"/>
+                            </div>
+                            <div class="one-half">
+                                <label for="last_name">Last name</label>
+                                <input type="text" id="last_number" name="last_name" />
+                            </div>
+                        </div>
+                        
+                        <div class="f-row">
+                            <div class="one-half">
+                                <label for="dep-address">Departure address</label>
+                                <input type="text" id="dep-address" name="departure"/>
+                            </div>
+                            <div class="one-half">
+                                <label for="des-address">Destination address</label>
+                                <input type="text" id="des-address" name="destination"/>
+                            </div>
+                            
+                        </div>
+
+                        <div class="f-row">
+                            <div class="one-half">
+                                <label for="dep-date">Departure date and time</label>
+                                <input name="datetime" type="text" id="dep-date" name="departure_time"/>
+                            </div>
+
+                            <div class="one-half">
+                                <label for="ret-date">Return date and time</label>
+                                <input name="datetime" type="text" id="ret-date" placeholder="(optional)" name="return_time"/>
+                            </div>
+
+                        </div>
+
+                        <div class="f-row">
+                            <div class="one-half">
+                                <label for="car-type">Car type</label>
+                                <input type="text" id="car-type" name="car_type"/>
+                            </div>
+                            <div class="one-half">
+                                <label for="fee">Fee</label>
+                                <input type="number" id="fee" placeholder="(optional)" name="fee"/>
+                            </div>
+                        </div>
+
+                        <div class="f-row">
+                            <div class="one-half">
+                                <label for="available-seats">Available seats</label>
+                                <input type="text" id="available-seats" name="available_seats"/>
+                            </div>
+                            <div class="one-half"> 
+                                <label for="payment">Select payment type</label>
+                                <select id="payment" name="payment_type">
+                                    <option >Paypal</option>
+                                    <option selected>Cash</option>
+                                    
+                                </select>
+                            </div>
+                        </div>
+                            
+                        <div class="actions">
+                            <a href="#" class="btn medium back">Go back</a>
+                            <button href="#" class="btn medium color right">Continue</button>
+                        </div>
+                            
+
+                            
+                            
+                            
+                            
+                            
+                        </form>
+                    </div>
+                </div>
+                
+                    
+            </div>
+            
+        <!-- End post -->
+        
+        
+    
+        
+    </main>
+    <!-- //Main -->
+    
+    <!-- Footer -->
+    <footer class="footer black" role="contentinfo">
+        <div class="wrap">
+            <div class="row">
+                <!-- Column -->
+                <article class="one-half">
+                    <h6>About us</h6>
+                    <p>Car4go - get a ride, rent or trip.</p>
+                </article>
+                <!-- //Column -->
+                
+                <!-- Column -->
+                <article class="one-fourth">
+                    <h6>Need help?</h6>
+                    <p>Contact us via phone or email:</p>
+                    <p class="contact-data"><span class="ico phone"></span> +1 555 555 555</p>
+                    <p class="contact-data"><span class="ico email"></span> <a href="mailto:help@transfers.com">help@transfers.com</a></p>
+                </article>
+                <!-- //Column -->
+                
+                <!-- Column -->
+                <article class="one-fourth">
+                    <h6>Follow us</h6>
+                    <ul class="social">
+                        <li class="facebook"><a href="#" title="facebook">facebook</a></li>
+                        <li class="twitter"><a href="#" title="twitter">twitter</a></li>
+                        <li class="gplus"><a href="#" title="gplus">google plus</a></li>
+                        <li class="linkedin"><a href="#" title="linkedin">linkedin</a></li>
+                        <li class="vimeo"><a href="#" title="vimeo">vimeo</a></li>
+                        <li class="pinterest"><a href="#" title="pinterest">pinterest</a></li>
+                    </ul>
+                </article>
+                <!-- //Column -->
+            </div>
+            
+            <div class="copy">
+                <p>Copyright 2015, Car4go. All rights reserved. </p>
+                
+                <nav role="navigation" class="foot-nav">
+                    <ul>
+                        <li><a href="#" title="Home">Home</a></li>
+                        <li><a href="#" title="Blog">Blog</a></li>
+                        <li><a href="#" title="About us">About us</a></li>
+                        <li><a href="#" title="Contact us">Contact us</a></li>
+                        <li><a href="#" title="Terms of use">Terms of use</a></li>
+                        <li><a href="#" title="Help">Help</a></li>
+                        <li><a href="#" title="For partners">For partners</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </footer>
+    <!-- //Footer -->
+    
+    <!-- Preloader -->
+    <div class="preloader">
+        <div id="followingBallsG">
+            <div id="followingBallsG_1" class="followingBallsG"></div>
+            <div id="followingBallsG_2" class="followingBallsG"></div>
+            <div id="followingBallsG_3" class="followingBallsG"></div>
+            <div id="followingBallsG_4" class="followingBallsG"></div>
+        </div>
+    </div>
+    <!-- //Preloader -->
+    
+     
+    <script src="{% static 'car4go/js/jquery.min.js' %}"></script>
+    <script src="{% static 'car4go/js/jquery.uniform.min.js' %}"></script>
+    <script src="{% static 'car4go/js/jquery.datetimepicker.js' %}"></script>
+    <script src="{% static 'car4go/js/jquery.slicknav.min.js' %}"></script>
+    <script src="{% static 'car4go/js/wow.min.js' %}"></script>
+    <script src="{% static 'car4go/js/search.js' %}"></script>
+    <script src="{% static 'car4go/js/scripts.js' %}"></script>
+    
+  </body>
+{% endblock %}

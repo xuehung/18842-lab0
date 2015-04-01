@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+   <head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta name="keywords" content="Transfers - Private Transport and Car Hire HTML Template" />
+		<meta name="description" content="Transfers - Private Transport and Car Hire HTML Template">
+		<meta name="author" content="themeenergy.com">
+	
+		<title>Transfers - Home</title>
+		{% load staticfiles %}
+		<link rel="stylesheet" type="text/css" href="{% static 'car4go/css/theme-pink.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'car4go/css/style.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'car4go/css/animate.css' %}" />
+
+		<link href='http://fonts.googleapis.com/css?family=Raleway:400,500,600,700|Montserrat:400,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="{% static 'car4go/images/favicon.ico' %}" />
+    	<script type="text/javascript" src="chrome-extension://bfbmjmiodbnnpllbbbfblcplfjjepjdn/js/injected.js"></script>
+    	
+    </head>
+
+    <body>
+	    <div class="content">
+	    	<header class="header" role="banner">
+        		<div class="wrap">       
+                		<!-- Main Nav -->
+                    		<nav role="navigation" class="main-nav">
+                        		<ul>
+                            		<li>
+                                		<a href="/" title="">Home</a>
+                            		</li>
+                            		<li>
+                                		<a href="/share/list" title="Share">Share</a>
+                            		</li>
+                        		</ul>
+                    		</nav>
+                		<!-- //Main Nav -->
+        		</div>
+    		</header>
+		    {% block content %}
+		       <!-- Header -->
+		    {% endblock %}
+		</div>
+	</body>
+</html>

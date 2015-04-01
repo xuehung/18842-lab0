@@ -1,0 +1,66 @@
+{% extends "car4go/base.html" %}
+
+{% block content %}
+    <body>
+    <!-- Main -->
+    <main class="main" role="main">
+        <!-- Search -->
+        <div class="advanced-search color">
+            <div class="wrap">
+                
+            </div>
+        </div>
+        <!-- //Search -->
+        
+        <div class="wrap">
+            <div class="row">
+                <!--- Content -->
+                <div class="full-width content">
+                    <h2>Select transfer type for your DEPARTURE</h2>
+                    
+                    <div class="results">
+                        <!-- Item -->
+                          {% for event in items %}
+                          <article class="result">
+                            <div class="one-fourth heightfix"><img src="http://placehold.it/1024x768" alt="" /></div>
+                            <div class="one-half heightfix">
+                                <h3>{{event.car_type}}<a href="javascript:void(0)" class="trigger color" title="Read more">?</a></h3>
+                                <ul>
+                                    <li>
+                                        <span class="ico people"></span>
+                                        <p>Max <strong>{{event.available_seats}}</strong> <br />people per vehicle</p>
+                                    </li>
+                                    <li>
+                                        <span class="ico luggage"></span>
+                                        <p><strong>{{event.departure}}</strong> To <br /><strong>{{event.destination}}</strong></p>
+                                    </li>
+                                    <li>
+                                        <span class="ico time"></span>
+                                        <p>Estimated arriving time <br /><strong>{{ event.share_time }}</strong></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="one-fourth heightfix">
+                                <div>
+                                    <div class="price"> {{event.fee}} <small>USD</small></div>
+                                    <span class="meta">per passenger</span>
+                                    <a href="/" class="btn grey large">select</a>
+                                </div>
+                            </div>
+<!--                             <div class="full-width information">    
+                                <a href="javascript:void(0)" class="close color" title="Close">x</a>
+                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+                            </div> -->
+                        </article>
+                        {% endfor %}
+
+                    </div>
+                </div>
+                <!--- //Content -->
+            </div>
+        </div>
+    </main>
+    <!-- //Main -->
+    </body>
+
+{% endblock %}
